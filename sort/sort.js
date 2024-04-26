@@ -29,16 +29,18 @@ function recorrer(array) {
   rta = new Array(filas).fill(new Array(columnas).fill(""));
   console.log("rta: ", rta);
 
+  let col = 0;
   for (let i = 0; i < array.length; i++) {
     //console.log(array.length - i);
     let reps  = repeticiones(array.length-i);
     console.log("reps: ", reps);
-    
-    
+    let count = 0;
       
-      for (let k = 0; k < array.length; k++) {
-        for (let j = 0; j < reps; j++) {
-          console.log(array[k]);
+    for (let k = 0; k < array.length; k++) {
+      for (let j = 0; j < reps; j++) {
+        console.log(array[k]);
+        rta[count][col] = array[k];
+        count++;
           /*       console.log("i: ", i);
       console.log("j: ", j);
       console.log("k: ", k); */
@@ -47,7 +49,11 @@ function recorrer(array) {
 
 
   }
- 
+   console.log("--");
+  for (let i = 0; i < columnas; i++) {
+    console.log(rta[i]);
+  }
+  
 
   
 }
