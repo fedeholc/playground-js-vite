@@ -1,5 +1,13 @@
 let a = ["a", "b", "c", "d"];
 
+// function to remove one item from array
+function removeItemOnce(arr, value) {
+  var index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
 function resto(arr) {
   console.log("resto: ", arr);
 }
@@ -26,37 +34,42 @@ function recorrer(array) {
   let columnas = array.length;
 
   let rta = [];
-  rta = new Array(filas).fill(new Array(columnas).fill(""));
-  console.log("rta: ", rta);
-
-  let col = 0;
-  for (let i = 0; i < array.length; i++) {
-    //console.log(array.length - i);
-    let reps  = repeticiones(array.length-i);
-    console.log("reps: ", reps);
-    let count = 0;
-      
-    for (let k = 0; k < array.length; k++) {
-      for (let j = 0; j < reps; j++) {
-        console.log(array[k]);
-        rta[count][col] = array[k];
+  for (let i = 0; i < filas; i++) {
+    rta[i] = new Array(columnas).fill("");
+  }
+    
+  let disponibles = [...array];
+  let restantes = [...array];
+   for (let i = 0; i < columnas; i++) {
+    console.log("col: ",i);
+     let count = 0;  
+    for (let k = 0; k < columnas-i; k++) {
+       console.log("cols: ", i, columnas-i, "filas /cols", filas/(columnas-i));
+      for (let j = 0; j < filas/(columnas-i); j++) {
+         
+        //rta[count][i] = [...array[k]].toString();
+        rta[count][i] = `${count}-k${k}-j${j}-${array[k]}`;
         count++;
-          /*       console.log("i: ", i);
-      console.log("j: ", j);
-      console.log("k: ", k); */
-        }
+      }
     }
-
-
   }
-   console.log("--");
-  for (let i = 0; i < columnas; i++) {
-    console.log(rta[i]);
-  }
-  
-
-  
+  console.log("--");
+  console.log(rta);  
 }
 
+
 recorrer(["a", "b", "c","d"]);
+let x = ["a", "b", "c", "d"];
+//x = [...removeItemOnce(x,"b")];
+//console.log("x: ", x);
+
+
 //console.log(factorial(4) / 4);
+/* let x = [["a", "b", "c", "d"],["e", "f", "g", "h"]];
+console.log(x);
+
+let rta2 = [];
+rta2 = new Array(24).fill(new Array(4).fill(""));
+rta2[0][0] = "a";
+rta2[0][1] = "b";
+console.log("rta: ", rta2); */
