@@ -6,7 +6,7 @@ function removeItemOnce(arr, value) {
   if (index > -1) {
     arr.splice(index, 1);
   }
-  return arr;
+  return [...arr];
 }
 function resto(arr) {
   console.log("resto: ", arr);
@@ -41,15 +41,28 @@ function recorrer(array) {
   let disponibles = [...array];
   let restantes = [...array];
    for (let i = 0; i < columnas; i++) {
-    console.log("col: ",i);
+    //console.log("col: ",i);
      let count = 0;  
-    for (let k = 0; k < columnas-i; k++) {
+     for (let k = 0; k < columnas-i; k++) {
        console.log("cols: ", i, columnas-i, "filas /cols", filas/(columnas-i));
+       
+       //disponibles = [...array];
       for (let j = 0; j < filas/(columnas-i); j++) {
          
-        //rta[count][i] = [...array[k]].toString();
-        rta[count][i] = `${count}-k${k}-j${j}-${array[k]}`;
+        for (let l=0; l<i; l++) {
+          //console.log("holi", disponibles,  rta[count][l]);
+          console.log(rta,"deberia quitar: ", rta[count][l]);
+          console.log("disponibles: ", disponibles);
+          disponibles = [...removeItemOnce(disponibles, rta[count][l])];
+          console.log("disponibles pos: ", disponibles);
+          //disponibles = [...removeItemOnce(disponibles, rta[count][l])];
+        }
+        rta[count][i] = [disponibles[k]].toString();
+        //rta[count][i] = `${count}-k${k}-j${j}-${disponibles[k]}`;
+
         count++;
+        //TODO_ el problema esta en donde restaurar el archivo de disponibles. O actualizar valores de columnas
+
       }
     }
   }
@@ -58,7 +71,7 @@ function recorrer(array) {
 }
 
 
-recorrer(["a", "b", "c","d"]);
+recorrer(["a", "b", "c"]);
 let x = ["a", "b", "c", "d"];
 //x = [...removeItemOnce(x,"b")];
 //console.log("x: ", x);
