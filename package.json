@@ -9,6 +9,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^5.2.0"
+    "@vitest/ui": "^1.5.2",
+    "eslint-plugin-jest-dom": "^5.4.0",
+    "jsdom": "^24.0.0",
+    "msw": "^2.2.14",
+    "vite": "^5.2.0",
+    "vitest": "^1.5.2"
   }
 }
