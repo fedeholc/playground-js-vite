@@ -1,20 +1,16 @@
-let miarray = [2, 3, 1, 20, 5, 33, 14, 22];
+let array = [1, 4, 2, 8, 345, 1];
 
-function cambiar(lugar1, lugar2, valor1, valor2, array) {
-  array[lugar1] = valor2;
-  array[lugar2] = valor1;
+function cambiar(lugar1, lugar2, valor1, valor2, arr) {
+  arr[lugar1] = valor2;
+  arr[lugar2] = valor1;
 }
 
-for (let i = 0; i < miarray.length - i; i++) {
-  for (let j = 0; j < miarray.length - 1; j++) {
-    if (miarray[j] > miarray[j + 1]) {
-      console.log("cambio: ", miarray[j], miarray[j + 1]);
-      cambiar(j, j + 1, miarray[j], miarray[j + 1], miarray);
-    } else {
-      console.log("no cambio: ", miarray[j], miarray[j + 1]);
+let k = 0;
+
+do {
+  for (let j = 0; j < array.length - 1; j++) {
+    if (array[j] > array[j + 1]) {
+      cambiar(j, j + 1, array[j], array[j + 1], array);
     }
   }
-  console.log(miarray);
-}
-
-console.log(miarray);
+} while (array.length - k > 1);
