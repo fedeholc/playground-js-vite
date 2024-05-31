@@ -6,5 +6,7 @@ document.querySelector("#app").innerHTML = `
   <div>
   <p>Hello world</p>
   <a href="/promises/promises.html">Promises</a>
+    <a href="/webc/webc.html">webc</a>
+
   </div>
 `;
