@@ -1,4 +1,4 @@
-// TODO: poner el test en el post
+// ver explicación del código en el post <https://nsp.fedeholc.ar/posts/2024-04-20-promises---ejemplos-de-creaci%C3%B3n-y-uso>
 
 import { expect, test, beforeAll, afterAll, afterEach } from "vitest";
 import { customFetch } from "./customFetch";
@@ -27,7 +27,7 @@ test("customFetch arroja Error cuando la respuesta de fetch es error de red", as
   expect(rta).toBe("Error de red: Failed to fetch");
 });
 
-test("customFetch recibe ok la rta", async () => {
+test("customFetch envia correctamente la rta", async () => {
   let rta = await customFetch("https://ok.com");
 
   let rtaOk = await rta.json();
