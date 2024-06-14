@@ -70,34 +70,48 @@ document.querySelector("#download").addEventListener("click", downloadFrames);
 function downloadFrames() {
   ffmpeg.whenReady(async () => {
     console.log("inicio de ffmpeg");
+
+    await ffmpeg.writeFile("input1.png", frames[0]);
+    await ffmpeg.writeFile("input2.png", frames[1]);
+    await ffmpeg.writeFile("input3.png", frames[2]);
+
+    /* 
     await ffmpeg.writeFile("0.png", frames[0]);
     await ffmpeg.writeFile("1.png", frames[1]);
     await ffmpeg.writeFile("2.png", frames[2]);
-
-    let rta = await ffmpeg
+ */
+    /*  let rta = await ffmpeg
       .input({
         sequence: ["0.png", "1.png", "2.png"],
         framerate: 1,
-        duration: 3,
       })
       .ouput({
-        format: "mp4",
-        video: {
-          codec: "libx264",
-
-          framerate: 1,
+        format: "avi",
+        filterComplex: {
+          filter: "[0:v][1:v][2:v]concat=n=3:v=1[outv]",
+          map: "[outv]",
         },
       })
-      .export();
+      .export(); */
+    await ffmpeg.exec([
+      "-framerate",
+      "1", // Velocidad de fotogramas, ajusta según tus necesidades
+      "-i",
+      "input%d.png", // Plantilla de entrada
+      "output.avi", // Archivo de salida
+    ]);
+
+    await ffmpeg.exec(["-i", "output.avi", "output2.mp4"]);
+    let rta = ffmpeg.readFile("output2.mp4");
 
     console.log("rta:", rta);
     console.log("fin de ffmpeg");
-    const blob = new Blob(rta, { type: "video/mp4" });
+    const blob = new Blob([rta.buffer], { type: "video/mp4" });
     console.log(blob);
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "video.mp4";
+    a.download = "video.avi";
 
     document.body.appendChild(a);
     a.click();
