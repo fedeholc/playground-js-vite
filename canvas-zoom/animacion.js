@@ -4,7 +4,8 @@ const imageLoader = document.getElementById("imageLoader");
 
 let img = new Image();
 let scale = 1;
-const scaleFactor = 1.0001; // Factor de aumento de escala en cada cuadro
+const scaleFactor = 1.001; // Factor de aumento de escala en cada cuadro
+const frames = [];
 
 imageLoader.addEventListener("change", handleImage, false);
 
@@ -41,16 +42,28 @@ function animateZoom(timestamp) {
     // Dibuja la imagen escalada
     ctx.drawImage(img, x, y, width, height);
 
+    frames.push(canvas.toDataURL("image/jpg")); // Guarda el cuadro actual
+
     // Aumenta la escala
     scale *= scaleFactor;
 
-    if (elapsed < 15000) {
+    if (elapsed < 5000) {
       // 5 segundos
       requestAnimationFrame(step);
     } else {
       console.log("Animación de zoom terminada");
+      //downloadFrames();
     }
   }
 
   requestAnimationFrame(step);
+}
+
+function downloadFrames() {
+  frames.forEach((frame, index) => {
+    const a = document.createElement("a");
+    a.href = frame;
+    a.download = `frame_${index}.jpg`;
+    a.click();
+  });
 }
