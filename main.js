@@ -8,5 +8,7 @@ document.querySelector("#app").innerHTML = `
     <a href="/promises/promises.html">Promises</a>
     <a href="/webc/webc.html">webc</a>
     <a href="/piexif/piexif.html">piexif</a>
+        <a href="/canvas-zoom/canvas-zoom.html">canvas-zoom</a>
+
   </div>
 `;

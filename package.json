@@ -17,6 +17,7 @@
     "vitest": "^1.5.2"
   },
   "dependencies": {
+    "canvas": "^2.11.2",
     "piexifjs": "^1.0.6"
   }
 }
