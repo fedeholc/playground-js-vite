@@ -17,6 +17,7 @@
     "vitest": "^1.5.2"
   },
   "dependencies": {
+    "@diffusion-studio/ffmpeg-js": "^0.2.3",
     "canvas": "^2.11.2",
     "piexifjs": "^1.0.6"
   }
