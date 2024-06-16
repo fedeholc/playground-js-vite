@@ -19,7 +19,7 @@ function handleImage(e) {
   const reader = new FileReader();
   reader.onload = function (event) {
     img.onload = function () {
-      scale = 1; // Reinicia la escala
+      scale = 1; // VER OJO Reinicia la escala
       canvas.width = img.width;
       canvas.height = img.height;
       animateZoom();
