@@ -29,40 +29,48 @@ function handleImage(e) {
   reader.readAsDataURL(e.target.files[0]);
 }
 
+let startTime = null;
+let frameConunter = 0;
+
 function animateZoom(timestamp) {
-  let startTime = null;
-
-  function step(currentTime) {
-    if (!startTime) startTime = currentTime;
-    const elapsed = currentTime - startTime;
-
-    // Limpia el canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Calcula la posición y tamaño de la imagen
-    const width = img.width * scale;
-    const height = img.height * scale;
-    const x = canvas.width / 2 - width / 2;
-    const y = canvas.height / 2 - height / 2;
-
-    // Dibuja la imagen escalada
-    ctx.drawImage(img, x, y, width, height);
-
-    frames.push(canvas.toDataURL("image/png")); // Guarda el cuadro actual
-
-    // Aumenta la escala
-    scale *= scaleFactor;
-
-    if (elapsed < 2000) {
-      // 5 segundos
-      requestAnimationFrame(step);
-    } else {
-      console.log("Animación de zoom terminada");
-      //downloadFrames();
-    }
-  }
-
   requestAnimationFrame(step);
+}
+
+function step(currentTime) {
+  if (!startTime) startTime = currentTime;
+  const elapsed = currentTime - startTime;
+
+  // Limpia el canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Calcula la posición y tamaño de la imagen
+  const width = img.width * scale;
+  const height = img.height * scale;
+  const x = canvas.width / 2 - width / 2;
+  const y = canvas.height / 2 - height / 2;
+
+  // Dibuja la imagen escalada
+  ctx.drawImage(img, x, y, width, height);
+
+  frames.push(canvas.toDataURL("image/png")); // Guarda el cuadro actual
+
+  // Aumenta la escala
+  scale *= scaleFactor;
+
+  if (frameConunter < 48) {
+    frameConunter++;
+    requestAnimationFrame(step);
+  } else {
+    console.log("Animación de zoom terminada");
+    //downloadFrames();
+  }
+  /*   if (elapsed < 2000) {
+    // 5 segundos
+    requestAnimationFrame(step);
+  } else {
+    console.log("Animación de zoom terminada");
+    //downloadFrames();
+  } */
 }
 
 document.querySelector("#download").addEventListener("click", downloadFrames);
@@ -71,10 +79,14 @@ function downloadFrames() {
   ffmpeg.whenReady(async () => {
     console.log("inicio de ffmpeg");
 
-    await ffmpeg.writeFile("input1.png", frames[0]);
+    frames.forEach(async (frame, index) => {
+      await ffmpeg.writeFile(`input${index + 1}.png`, frames[index]);
+    });
+
+    /* 
     await ffmpeg.writeFile("input2.png", frames[1]);
     await ffmpeg.writeFile("input3.png", frames[2]);
-
+ */
     /* 
     await ffmpeg.writeFile("0.png", frames[0]);
     await ffmpeg.writeFile("1.png", frames[1]);
@@ -95,14 +107,14 @@ function downloadFrames() {
       .export(); */
     await ffmpeg.exec([
       "-framerate",
-      "1", // Velocidad de fotogramas, ajusta según tus necesidades
+      "12", // Velocidad de fotogramas, ajusta según tus necesidades
       "-i",
       "input%d.png", // Plantilla de entrada
-      "output.avi", // Archivo de salida
+      "output.mp4", // Archivo de salida
     ]);
 
-    await ffmpeg.exec(["-i", "output.avi", "output2.mp4"]);
-    let rta = ffmpeg.readFile("output2.mp4");
+    //await ffmpeg.exec(["-i", "output.avi", "output2.mp4"]);
+    let rta = ffmpeg.readFile("output.mp4");
 
     console.log("rta:", rta);
     console.log("fin de ffmpeg");
