@@ -1,3 +1,5 @@
+//FIXME si la imagen tiene un número impar de pixeles da error el codec que genera el video.
+
 import { FFmpeg } from "@diffusion-studio/ffmpeg-js";
 
 const canvas = document.getElementById("miCanvas");
@@ -10,24 +12,22 @@ document.querySelector("#download").addEventListener("click", downloadFrames);
 
 document
   .querySelector("#frames")
-  .addEventListener("click", () => crearFrames(48, 1, 1.001));
+  //.addEventListener("click", () => crearFrames(48, 1, 1.001));
+  .addEventListener("click", () => animateZoom(48, 1, 1.001));
 
 const ffmpeg = new FFmpeg({
   config: "gpl-extended",
 });
 
 let img = new Image();
-let scale = 1;
-const scaleFactor = 1.001; // Factor de aumento de escala en cada cuadro
 const frames = [];
-let frameConunter = 0;
 
 function handleImage(e) {
   console.log("inicio de handleImage");
   const reader = new FileReader();
   reader.onload = function (event) {
     img.onload = function () {
-      scale = 1; // VER OJO Reinicia la escala
+
       canvas.width = img.width;
       canvas.height = img.height;
       //animateZoom();
@@ -42,33 +42,32 @@ function handleImage(e) {
   reader.readAsDataURL(e.target.files[0]);
 }
 
-function animateZoom(timestamp) {
-  requestAnimationFrame(step);
-}
-
-function step() {
+function animateZoom(cantidadFrames, scale, scaleFactor) {
   // Limpia el canvas
+  let inicio = Date.now();
+  console.log("start creación frames  ", Date.now());
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Calcula la posición y tamaño de la imagen
-  const width = img.width * scale;
-  const height = img.height * scale;
-  const x = canvas.width / 2 - width / 2;
-  const y = canvas.height / 2 - height / 2;
+  requestAnimationFrame(step);
+  let counter = 0;
 
-  // Dibuja la imagen escalada
-  ctx.drawImage(img, x, y, width, height);
-
-  frames.push(canvas.toDataURL("image/png")); // Guarda el cuadro actual
-
-  // Aumenta la escala
-  scale *= scaleFactor;
-
-  if (frameConunter < 48) {
-    frameConunter++;
-    requestAnimationFrame(step);
-  } else {
-    console.log("Animación de zoom terminada");
+  function step(timestamp) {
+    // Calcula la posición y tamaño de la imagen
+    const width = img.width * scale;
+    const height = img.height * scale;
+    const x = canvas.width / 2 - width / 2;
+    const y = canvas.height / 2 - height / 2;
+    // Dibuja la imagen escalada
+    ctx.drawImage(img, x, y, width, height);
+    frames.push(canvas.toDataURL("image/png")); // Guarda el cuadro actual
+    scale *= scaleFactor;
+    counter++;
+    if (counter < cantidadFrames) {
+      requestAnimationFrame(step);
+    } else {
+      console.log("fin creación frames  ", Date.now() - inicio);
+    }
   }
 }
 
@@ -109,7 +108,8 @@ function downloadFrames() {
 }
 
 function crearFrames(cantidadFrames, scale, scaleFactor) {
-  console.log("inicio creación frames  ");
+  let inicio = Date.now();
+  console.log("start creación frames  ", Date.now());
   // Limpia el canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -128,5 +128,5 @@ function crearFrames(cantidadFrames, scale, scaleFactor) {
     // Aumenta la escala
     scale *= scaleFactor;
   }
-  console.log("fin creación frames  ");
+  console.log("fin creación frames  ", Date.now() - inicio);
 }
