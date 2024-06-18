@@ -13,7 +13,8 @@ document.querySelector("#download").addEventListener("click", downloadFrames);
 document
   .querySelector("#frames")
   //.addEventListener("click", () => crearFrames(48, 1, 1.001));
-  .addEventListener("click", () => animateZoom(48, 1, 1.001));
+  //.addEventListener("click", () => animateZoom(48, 1, 1.001));
+  .addEventListener("click", () => animatePan(240, 1, 1.001));
 
 const ffmpeg = new FFmpeg({
   config: "gpl-extended",
@@ -27,7 +28,6 @@ function handleImage(e) {
   const reader = new FileReader();
   reader.onload = function (event) {
     img.onload = function () {
-
       canvas.width = img.width;
       canvas.height = img.height;
       //animateZoom();
@@ -40,6 +40,36 @@ function handleImage(e) {
     img.src = event.target.result;
   };
   reader.readAsDataURL(e.target.files[0]);
+}
+
+function animatePan(cantidadFrames, scale, scaleFactor) {
+  // Limpia el canvas
+  let inicio = Date.now();
+  console.log("start creación frames  ", Date.now());
+  canvas.height = img.height;
+  canvas.width = img.height * 0.8;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  requestAnimationFrame(step);
+  let counter = 0;
+
+  function step(timestamp) {
+    console.log("step", counter);
+    // Calcula la posición y tamaño de la imagen
+    const width = img.width;
+    const height = img.height;
+    const x = 0 - counter * 2;
+    const y = 0;
+    // Dibuja la imagen escalada
+    ctx.drawImage(img, x, y, width, height);
+    frames.push(canvas.toDataURL("image/png")); // Guarda el cuadro actual
+    counter++;
+    if (counter < cantidadFrames) {
+      requestAnimationFrame(step);
+    } else {
+      console.log("fin creación frames  ", Date.now() - inicio);
+    }
+  }
 }
 
 function animateZoom(cantidadFrames, scale, scaleFactor) {
@@ -82,7 +112,7 @@ function downloadFrames() {
     //VER ojo, no cambiar el orden de estos parametros porque se rompe
     await ffmpeg.exec([
       "-framerate",
-      "12", // Velocidad de fotogramas, ajusta según tus necesidades
+      "30", // Velocidad de fotogramas, ajusta según tus necesidades
       "-i",
       "input%d.png", // Plantilla de entrada
       "-c:v",
