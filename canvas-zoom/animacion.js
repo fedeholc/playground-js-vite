@@ -23,7 +23,8 @@ document
   //.addEventListener("click", () => crearFrames(48, 1, 1.001));
   //.addEventListener("click", () => animateZoom(48, 1, 1.001));
   //.addEventListener("click", () => animatePan(240, 1, 1.001));
-  .addEventListener("click", () => animateZoomOut(60, 2, 0.99));
+  //.addEventListener("click", () => animateZoomOut(60, 2, 0.99));
+  .addEventListener("click", () => animateZoomOutTest(60, 2, 0.99));
 
 const ffmpeg = new FFmpeg({
   config: "gpl-extended",
@@ -48,7 +49,7 @@ function handleImage(e) {
       // por lo que se va a ver cropeada
       // VER ojo, en lugar de usar 5 paràmetros y hacer que la imagen arranca desde una x negativa para que haga el crop centrado, se podria usar la de 9 parametros y seleccionar desde donde se cropea la imagen
       // ver https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-      
+
       canvas.height = 1920;
       canvas.width = 1080;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -114,6 +115,47 @@ function animateZoom(cantidadFrames, scale, scaleFactor) {
     const x = canvas.width / 2 - width / 2;
     const y = canvas.height / 2 - height / 2;
     // Dibuja la imagen escalada
+    ctx.drawImage(img, x, y, width, height);
+    frames.push(canvas.toDataURL("image/png")); // Guarda el cuadro actual
+    scale *= scaleFactor;
+    counter++;
+    if (counter < cantidadFrames) {
+      requestAnimationFrame(step);
+    } else {
+      console.log("fin creación frames  ", Date.now() - inicio);
+    }
+  }
+}
+
+function animateZoomOutTest(cantidadFrames, scale, scaleFactor) {
+  // Limpia el canvas
+  let inicio = Date.now();
+  console.log("start creación frames  ", Date.now());
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  requestAnimationFrame(step);
+  let counter = 0;
+
+  function step(timestamp) {
+    let newWidth = (canvas.height / img.height) * img.width;
+    /*   ctx.drawImage(
+      img,
+      (canvas.width - newWidth) / 2,
+      0,
+      newWidth,
+      canvas.height
+    ); */
+    // Calcula la posición y tamaño de la imagen
+    //TODO: acà multiplicaba por scale factor, lo cambie para probar
+    //FIXME no estaría funcionando, al menos no se ve que se anime en pantalla
+    // pero se colgaba en la netbook, probar bien.
+    const width = newWidth * 1.5 - counter;
+    const height = canvas.height * 1.5 - counter;
+    const x = canvas.width / 2 - width / 2;
+    const y = canvas.height / 2 - height / 2;
+    // Dibuja la imagen escalada
+    console.log(x, y, width, height);
     ctx.drawImage(img, x, y, width, height);
     frames.push(canvas.toDataURL("image/png")); // Guarda el cuadro actual
     scale *= scaleFactor;
