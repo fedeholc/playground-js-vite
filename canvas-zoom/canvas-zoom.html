@@ -8,28 +8,40 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       display: flex;
-      flex-direction: row;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
     }
 
     canvas {
       display: block;
     }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
   </style>
 </head>
 
 <body>
-  <input type="file" id="imageLoader" name="imageLoader" />
+  <section><label>Framerate</label><input type="number" id="frame-rate" name="frame-rate" placeholder=30 value=30 />
+    <label>Pixel shift (by frame)</label><input type="number" id="pixel-shift" name="pixel-shift" placeholder=2
+      value=2 />
+    <label>canvas height</label><input type="number" id="canvas-height" name="canvas-height" placeholder=1920
+      value=1920 />
+  </section>
+  <br />
+  <input type="file" id="image-loader" name="image-loader" />
   <div style="display: grid;align-items: center;
     justify-content: center;
     justify-items: center;
     align-content: center;
     max-width: 250px;
     ">
-    <canvas style="width: 100%; height: 100%" id="miCanvas"></canvas>
+    <canvas style="width: 100%; height: 100%" id="mi-canvas"></canvas>
   </div>
   <button id="frames">Generar Frames</button>
   <button id="download">Descargar</button>

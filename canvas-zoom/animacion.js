@@ -10,10 +10,12 @@ Para el caso de crop, si la imagen no es 9 x 16 probablemente sea de un ratio ma
 
 import { FFmpeg } from "@diffusion-studio/ffmpeg-js";
 
-const canvas = document.getElementById("miCanvas");
+const canvas = /** @type {HTMLCanvasElement} */ (
+  document.getElementById("mi-canvas")
+);
 //const canvas = new OffscreenCanvas(100, 100);
 const ctx = canvas.getContext("2d");
-const imageLoader = document.getElementById("imageLoader");
+const imageLoader = document.getElementById("image-loader");
 imageLoader.addEventListener("change", handleImage, false);
 
 document.querySelector("#download").addEventListener("click", downloadFrames);
@@ -34,6 +36,9 @@ const ffmpeg = new FFmpeg({
 let img = new Image();
 const frames = [];
 
+/**
+ * @param {Event} e 
+ */
 function handleImage(e) {
   console.log("inicio de handleImage");
   const reader = new FileReader();
@@ -81,11 +86,22 @@ function handleImage(e) {
       );
     };
 
-    img.src = event.target.result;
+    if (typeof event.target.result === "string") {
+      img.src = event.target.result;
+    } else {
+      console.error("No se pudo cargar la imagen");
+      //TODO: ver cómo hice la carga de archivo y manejo de errores en fotoyop
+    }
   };
-  reader.readAsDataURL(e.target.files[0]);
+  const input = /** @type {HTMLInputElement} */ (e.target);
+  reader.readAsDataURL(input.files[0]);
 }
 
+/**
+ * @param {number} cantidadFrames
+ * @param {number} scale
+ * @param {number} scaleFactor
+ */
 function animatePan(cantidadFrames, scale, scaleFactor) {
   // Limpia el canvas
   let inicio = Date.now();
@@ -97,6 +113,9 @@ function animatePan(cantidadFrames, scale, scaleFactor) {
   requestAnimationFrame(step);
   let counter = 0;
 
+  /**
+   * @param {any} timestamp
+   */
   function step(timestamp) {
     console.log("step", counter);
     // Calcula la posición y tamaño de la imagen
@@ -116,6 +135,11 @@ function animatePan(cantidadFrames, scale, scaleFactor) {
   }
 }
 
+/**
+ * @param {number} cantidadFrames
+ * @param {number} scale
+ * @param {number} scaleFactor
+ */
 function animatePan2(cantidadFrames, scale, scaleFactor) {
   // Limpia el canvas
   let inicio = Date.now();
@@ -126,6 +150,9 @@ function animatePan2(cantidadFrames, scale, scaleFactor) {
   requestAnimationFrame(step);
   let counter = 1;
 
+  /**
+   * @param {any} timestamp
+   */
   function step(timestamp) {
     // Dibuja la imagen escalada
     console.log("step", counter, (img.width - canvas.width) / scaleFactor);
@@ -143,6 +170,11 @@ function animatePan2(cantidadFrames, scale, scaleFactor) {
   }
 }
 
+/**
+ * @param {number} cantidadFrames
+ * @param {number} scale
+ * @param {number} scaleFactor
+ */
 function animateZoom(cantidadFrames, scale, scaleFactor) {
   // Limpia el canvas
   let inicio = Date.now();
@@ -153,6 +185,9 @@ function animateZoom(cantidadFrames, scale, scaleFactor) {
   requestAnimationFrame(step);
   let counter = 0;
 
+  /**
+   * @param {any} timestamp
+   */
   function step(timestamp) {
     // Calcula la posición y tamaño de la imagen
     const width = img.width * scale;
@@ -172,6 +207,11 @@ function animateZoom(cantidadFrames, scale, scaleFactor) {
   }
 }
 
+/**
+ * @param {number} cantidadFrames
+ * @param {any} scale
+ * @param {number} scaleFactor
+ */
 function animateZoomOutTest(cantidadFrames, scale, scaleFactor) {
   // Limpia el canvas
   let inicio = Date.now();
@@ -182,6 +222,9 @@ function animateZoomOutTest(cantidadFrames, scale, scaleFactor) {
   requestAnimationFrame(step);
   let counter = 1;
 
+  /**
+   * @param {any} timestamp
+   */
   function step(timestamp) {
     let newWidth = Math.round((canvas.height / img.height) * img.width);
     /*   ctx.drawImage(
@@ -218,6 +261,11 @@ function animateZoomOutTest(cantidadFrames, scale, scaleFactor) {
   }
 }
 
+/**
+ * @param {number} cantidadFrames
+ * @param {number} scale
+ * @param {number} scaleFactor
+ */
 function animateZoomOut(cantidadFrames, scale, scaleFactor) {
   // Limpia el canvas
   let inicio = Date.now();
@@ -228,6 +276,9 @@ function animateZoomOut(cantidadFrames, scale, scaleFactor) {
   requestAnimationFrame(step);
   let counter = 0;
 
+  /**
+   * @param {any} timestamp
+   */
   function step(timestamp) {
     // Calcula la posición y tamaño de la imagen
     //TODO: acà multiplicaba por scale factor, lo cambie para probar
@@ -309,6 +360,11 @@ function downloadFrames() {
   });
 }
 
+/**
+ * @param {number} cantidadFrames
+ * @param {number} scale
+ * @param {number} scaleFactor
+ */
 function crearFrames(cantidadFrames, scale, scaleFactor) {
   let inicio = Date.now();
   console.log("start creación frames  ", Date.now());
