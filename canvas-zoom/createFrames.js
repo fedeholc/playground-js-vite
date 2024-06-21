@@ -56,8 +56,12 @@ export function createFramesZoomOut(canvas, img, cantidadFrames, scaleFactor) {
       const height =
         canvas.height + cantidadFrames * scaleFactor - counter * scaleFactor;
 
-      const x = Math.round(canvas.width / 2 - width / 2);
-      const y = Math.round(canvas.height / 2 - height / 2);
+      //VER el redondear hacía que se viera mal cuando el scaleFactor era de 1 pixel. Habría que ver si dejarlo así o probar redondear tanto x e y como el width y height para que siempre tenga enteros divisibles por 2.
+      //const x = Math.round(canvas.width / 2 - width / 2);
+      //const y = Math.round(canvas.height / 2 - height / 2);
+
+      const x = canvas.width / 2 - width / 2;
+      const y = canvas.height / 2 - height / 2;
 
       ctx.drawImage(img, x, y, width, height);
       videoFrames.push(canvas.toDataURL("image/png"));

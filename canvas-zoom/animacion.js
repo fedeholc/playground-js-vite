@@ -86,7 +86,7 @@ async function handlePan2end() {
 async function handleZoomOut() {
   //var inicio = Date.now();
   //console.log("start creación frames  ", Date.now());
-  let videoFrames = await createFramesZoomOut(canvas, img, 360, 2);
+  let videoFrames = await createFramesZoomOut(canvas, img, 60, 2);
   //console.log("fin creación frames  ", Date.now() - inicio);
 
   //var inicio = Date.now();
@@ -114,8 +114,8 @@ async function createVideo(videoFrames) {
         "30",
         "-i",
         "input%d.png", // Plantilla de entrada
-        //"-vf",
-        //"tpad=stop_mode=clone:stop_duration=5", // Filtro para extender el último frame
+        "-vf",
+        "tpad=stop_mode=clone:stop_duration=5", // Filtro para extender el último frame
         "-c:v",
         "libx264",
         "-pix_fmt",
