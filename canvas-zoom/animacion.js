@@ -13,9 +13,33 @@ GlobalScreenLogger.init(screenLogDiv);
 GlobalScreenLogger.log("Hola, mundo!");
 GlobalScreenLogger.log("Este es otro mensaje.");
 
+const inputPixelsShift = /** @type {HTMLInputElement} */ (
+  document.querySelector("#pixels-shift")
+);
+const inputFrameRate = /** @type {HTMLInputElement} */ (
+  document.querySelector("#frame-rate")
+);
+const inputLastFrameDuration = /** @type {HTMLInputElement} */ (
+  document.querySelector("#last-frame-duration")
+);
+const inputTotalFrames = /** @type {HTMLInputElement} */ (
+  document.querySelector("#total-frames")
+);
+
+const inputCanvasHeight = /** @type {HTMLInputElement} */ (
+  document.querySelector("#canvas-height")
+);
+const inputCanvasWidth = /** @type {HTMLInputElement} */ (
+  document.querySelector("#canvas-width")
+);
+const inputDivideBy = /** @type {HTMLInputElement} */ (
+  document.querySelector("#divide-by")
+);
+
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.getElementById("mi-canvas")
 );
+
 const ctx = canvas.getContext("2d");
 
 const imageLoader = document.getElementById("image-loader");
@@ -49,7 +73,11 @@ function handleUpload(e) {
       img.height = canvas.height;
       img.width = oldWidth * (canvas.height / oldHeight);
       console.log(img.height, img.width);
-      ctx.drawImage(img, 0, 0, img.width, img.height);
+
+      //imagen desde la izquierda
+      //ctx.drawImage(img, 0, 0, img.width, img.height);
+
+      //imagen centrada
       ctx.drawImage(
         img,
         (canvas.width - img.width) / 2,
@@ -70,10 +98,28 @@ function handleUpload(e) {
   reader.readAsDataURL(input.files[0]);
 }
 
+function configSizes() {
+  let divideBy = parseInt(inputDivideBy.value);
+  canvas.height = parseInt(inputCanvasHeight.value) / divideBy;
+  canvas.width = parseInt(inputCanvasWidth.value) / divideBy;
+
+  let oldHeight = img.height;
+  let oldWidth = img.width;
+  img.height = canvas.height;
+  img.width = oldWidth * (canvas.height / oldHeight);
+}
 async function handlePan2end() {
   //var inicio = Date.now();
   //console.log("start creación frames  ", Date.now());
-  let videoFrames = await createFramesPan2end(canvas, img, 2);
+
+  // sets the canvas size and the image size acording to the inputs
+  configSizes();
+
+  let videoFrames = await createFramesPan2end(
+    canvas,
+    img,
+    parseInt(inputPixelsShift.value)
+  );
   //console.log("fin creación frames  ", Date.now() - inicio);
 
   //var inicio = Date.now();
@@ -86,7 +132,16 @@ async function handlePan2end() {
 async function handleZoomOut() {
   //var inicio = Date.now();
   //console.log("start creación frames  ", Date.now());
-  let videoFrames = await createFramesZoomOut(canvas, img, 60, 2);
+
+  // sets the canvas size and the image size acording to the inputs
+  configSizes();
+
+  let videoFrames = await createFramesZoomOut(
+    canvas,
+    img,
+    parseInt(inputTotalFrames.value),
+    parseInt(inputPixelsShift.value)
+  );
   //console.log("fin creación frames  ", Date.now() - inicio);
 
   //var inicio = Date.now();
@@ -111,11 +166,11 @@ async function createVideo(videoFrames) {
       // no cambiar el orden de estos parametros porque se rompe
       await ffmpeg.exec([
         "-framerate",
-        "30",
+        `${inputFrameRate.value}`,
         "-i",
         "input%d.png", // Plantilla de entrada
         "-vf",
-        "tpad=stop_mode=clone:stop_duration=5", // Filtro para extender el último frame
+        `tpad=stop_mode=clone:stop_duration=${inputLastFrameDuration.value}`, // Filtro para extender el último frame
         "-c:v",
         "libx264",
         "-pix_fmt",
