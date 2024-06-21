@@ -31,7 +31,6 @@ export function createFramesPan2end(canvas, img, pixelsShift) {
   });
 }
 
-
 /**
  * @param {number} cantidadFrames
  * @param {number} scaleFactor
@@ -48,6 +47,8 @@ export function createFramesZoomOut(canvas, img, cantidadFrames, scaleFactor) {
     let counter = 1;
 
     function step() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
       let newWidth = Math.round((canvas.height / img.height) * img.width);
 
       const width =

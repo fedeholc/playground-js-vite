@@ -86,7 +86,7 @@ async function handlePan2end() {
 async function handleZoomOut() {
   //var inicio = Date.now();
   //console.log("start creación frames  ", Date.now());
-  let videoFrames = await createFramesZoomOut(canvas, img, 120, 2);
+  let videoFrames = await createFramesZoomOut(canvas, img, 360, 2);
   //console.log("fin creación frames  ", Date.now() - inicio);
 
   //var inicio = Date.now();
@@ -95,7 +95,6 @@ async function handleZoomOut() {
   //console.log("fin ffmpeg  ", Date.now() - inicio);
   downloadVideo(video);
 }
-
 
 //TODO: catch del error para el reject?
 /**
