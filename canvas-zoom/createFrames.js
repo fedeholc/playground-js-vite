@@ -4,8 +4,9 @@ import { GlobalScreenLogger } from "./screenLogger.js";
  * @param {number} pixelsShift
  * @param {HTMLCanvasElement} canvas
  * @param {HTMLImageElement} img
+ * @param {("fitWidth" | "fitHeight")} fit adjust image to width or height
  */
-export function createFramesPan2end(canvas, img, pixelsShift) {
+export function createFramesPan2end(canvas, img, pixelsShift, fit) {
   return new Promise((resolve, reject) => {
     const ctx = canvas.getContext("2d");
 
@@ -33,11 +34,11 @@ export function createFramesPan2end(canvas, img, pixelsShift) {
 
 /**
  * @param {number} cantidadFrames
- * @param {number} scaleFactor
+ * @param {number} pixelsShift
  * @param {HTMLCanvasElement} canvas
  * @param {HTMLImageElement} img
  */
-export function createFramesZoomOut(canvas, img, cantidadFrames, scaleFactor) {
+export function createFramesZoomOut(canvas, img, cantidadFrames, pixelsShift) {
   return new Promise((resolve, reject) => {
     const ctx = canvas.getContext("2d");
 
@@ -49,12 +50,19 @@ export function createFramesZoomOut(canvas, img, cantidadFrames, scaleFactor) {
     function step() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      let newWidth = Math.round((canvas.height / img.height) * img.width);
-
+      //adaptar para que encaje de altura
+      /*   const height =
+        canvas.height + cantidadFrames * pixelsShift - counter * pixelsShift;
+      const newWidth = Math.round((canvas.height / img.height) * img.width);
       const width =
-        newWidth + cantidadFrames * scaleFactor - counter * scaleFactor;
+        newWidth + cantidadFrames * pixelsShift - counter * pixelsShift; */
+
+      //adaptar para que encaje de ancho
+      const width =
+        canvas.width + cantidadFrames * pixelsShift - counter * pixelsShift;
+      const newHeight = Math.round((canvas.width / img.width) * img.height);
       const height =
-        canvas.height + cantidadFrames * scaleFactor - counter * scaleFactor;
+        newHeight + cantidadFrames * pixelsShift - counter * pixelsShift;
 
       //VER el redondear hacía que se viera mal cuando el scaleFactor era de 1 pixel. Habría que ver si dejarlo así o probar redondear tanto x e y como el width y height para que siempre tenga enteros divisibles por 2.
       //const x = Math.round(canvas.width / 2 - width / 2);

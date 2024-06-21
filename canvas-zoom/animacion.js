@@ -118,7 +118,8 @@ async function handlePan2end() {
   let videoFrames = await createFramesPan2end(
     canvas,
     img,
-    parseInt(inputPixelsShift.value)
+    parseInt(inputPixelsShift.value),
+    "fitHeight"
   );
   //console.log("fin creación frames  ", Date.now() - inicio);
 

@@ -44,3 +44,16 @@ await Promise.all(
   frames.map((frame, index) => ffmpeg.writeFile(`input${index + 1}.png`, frame))
 );
 ```
+
+Para usar enums:
+
+```javascript
+/**
+ * @typedef {typeof ZoomFit[keyof typeof ZoomFit]} ZoomFit
+ * @readonly */
+
+export const ZoomFit = {
+  WIDTH: "width",
+  HEIGHT: "height",
+};
+```
