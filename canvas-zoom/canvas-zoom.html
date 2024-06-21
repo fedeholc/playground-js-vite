@@ -23,12 +23,23 @@
       align-items: center;
       padding: 1rem;
     }
+
+    #screen-log {
+      width: 100%;
+      height: 100px;
+      overflow: auto;
+      background-color: #f0f0f0;
+      padding: 1rem;
+    }
   </style>
 </head>
 
 <body>
+  <section>
+    <div id="screen-log"></div>
+  </section>
   <section><label>Framerate</label><input type="number" id="frame-rate" name="frame-rate" placeholder=30 value=30 />
-    <label>Pixel shift (by frame)</label><input type="number" id="pixel-shift" name="pixel-shift" placeholder=2
+    <label>Pixels shift (per frame)</label><input type="number" id="pixels-shift" name="pixels-shift" placeholder=2
       value=2 />
     <label>canvas height</label><input type="number" id="canvas-height" name="canvas-height" placeholder=1920
       value=1920 />
@@ -44,6 +55,7 @@
     <canvas style="width: 100%; height: 100%" id="mi-canvas"></canvas>
   </div>
   <button id="frames">Generar Frames</button>
+  <button id="btn-pan2">Generar Vid: Pan2</button>
   <button id="download">Descargar</button>
   <script type="module" src="animacion.js" async defer></script>
 </body>
