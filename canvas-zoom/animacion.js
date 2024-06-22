@@ -35,6 +35,9 @@ const inputCanvasWidth = /** @type {HTMLInputElement} */ (
 const inputDivideBy = /** @type {HTMLInputElement} */ (
   document.querySelector("#divide-by")
 );
+const selectZoomFit = /** @type {HTMLSelectElement} */ (
+  document.querySelector("#zoom-fit")
+);
 
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.getElementById("mi-canvas")
@@ -103,11 +106,15 @@ function configSizes() {
   canvas.height = parseInt(inputCanvasHeight.value) / divideBy;
   canvas.width = parseInt(inputCanvasWidth.value) / divideBy;
 
+  //adapta la imagen al canvas considerando encajar la altura
+  //por lo que en una imagen vertical que sea 2 x 3, si el canvas es 9x16, la imagen se va a ver con un crop en los costados
+  //TODO: también habría que ver si hay que poner una opción para cambiar esto, y ver también si afecta a los efectos como el de zoom que puede tener fit por ancho o por alto
   let oldHeight = img.height;
   let oldWidth = img.width;
   img.height = canvas.height;
   img.width = oldWidth * (canvas.height / oldHeight);
 }
+
 async function handlePan2end() {
   //var inicio = Date.now();
   //console.log("start creación frames  ", Date.now());
@@ -136,12 +143,18 @@ async function handleZoomOut() {
   // sets the canvas size and the image size acording to the inputs
   configSizes();
 
+  /** @type {"fitHeight" | "fitWidth"} */
+  let zoomFit = "fitHeight";
+  if (selectZoomFit.value === "fitWidth") {
+    zoomFit = "fitWidth";
+  }
+
   let videoFrames = await createFramesZoomOut(
     canvas,
     img,
     parseInt(inputTotalFrames.value),
     parseInt(inputPixelsShift.value),
-    "fitHeight"
+    zoomFit
   );
   //console.log("fin creación frames  ", Date.now() - inicio);
 
@@ -186,10 +199,10 @@ async function createVideo(videoFrames) {
 }
 
 /**
- * @param {{ buffer: BlobPart; }} rta
+ * @param {{ buffer: BlobPart; }} video
  */
-function downloadVideo(rta) {
-  const blob = new Blob([rta.buffer], { type: "video/mp4" });
+function downloadVideo(video) {
+  const blob = new Blob([video.buffer], { type: "video/mp4" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

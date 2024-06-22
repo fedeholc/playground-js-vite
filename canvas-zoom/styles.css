@@ -1,0 +1,145 @@
+/* #f7768e #f7768e	This keyword, HTML elements, Regex group symbol, CSS units, Terminal Red
+#ff9e64 #ff9e64	Number and Boolean constants, Language support constants
+#e0af68 #e0af68	Function parameters, Regex character sets, Terminal Yellow
+#9ece6a #9ece6a	Strings, CSS class names
+#73daca #73daca	Object literal keys, Markdown links, Terminal Green
+#b4f9f8 #b4f9f8	Regex literal strings
+#2ac3de #2ac3de	Language support functions, CSS HTML elements
+#7dcfff #7dcfff	Object properties, Regex quantifiers and flags, Markdown headings, Terminal Cyan, Markdown code, Import/export keywords
+#7aa2f7 #7aa2f7	Function names, CSS property names, Terminal Blue
+#bb9af7 #bb9af7	Control Keywords, Storage Types, Regex symbols and operators, HTML Attributes, Terminal Magenta
+#c0caf5 #c0caf5	Variables, Class names, Terminal White
+#a9b1d6 #a9b1d6	Editor Foreground
+#9aa5ce #9aa5ce	Markdown Text, HTML Text
+#cfc9c2 #cfc9c2	Parameters inside functions (semantic highlighting only)
+#565f89 #565f89	Comments
+#414868 #414868	Terminal Black
+#24283b #24283b	Editor Background (Storm)
+#1a1b26 #1a1b26	Editor Background (Night)
+
+1f2335 24283b 292e42 3b4261 414868 545c7e 565f89 737aa2 a9b1d6 c0caf5 394b70 3d59a1 7aa2f7 7dcfff b4f9f8 bb9af7 9d7cd8 ff9e64 ffc777 c3e88d 4fd6be 41a6b5 ff757f c53b53 ff007c
+
+https: //lospec.com/palette-list/tokyo-night
+*/
+
+:root {
+  --background: var(--color1);
+  --labelFont: var(--color14);
+  --inputFont: var(--color16);
+  --inputBG: var(--color2);
+  --inputBorder: var(--color7);
+  --inputFocusBorder: var(--color14);
+
+  --color1: #1f2335;
+  --color2: #24283b;
+  --color3: #292e42;
+  --color4: #3b4261;
+  --color5: #414868;
+  --color6: #545c7e;
+  --color7: #565f89;
+  --color8: #737aa2;
+  --color9: #a9b1d6;
+  --color10: #c0caf5;
+  --color11: #394b70;
+  --color12: #3d59a1;
+  --color13: #7aa2f7;
+  --color14: #7dcfff;
+  --color15: #b4f9f8;
+  --color16: #bb9af7;
+  --color17: #9d7cd8;
+  --color18: #ff9e64;
+  --color19: #ffc777;
+  --color20: #c3e88d;
+  --color21: #4fd6be;
+  --color22: #41a6b5;
+  --color23: #ff757f;
+  --color24: #c53b53;
+  --color25: #ff007c;
+
+}
+
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*
+  2. Remove default margin
+*/
+* {
+  margin: 0;
+}
+
+/*
+  6. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/*
+  7. Avoid text overflows
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: var(--background);
+  color: var(--labelFont);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+input,
+select {
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--inputBorder);
+  background-color: var(--inputBG);
+  color: var(--inputFont);
+  border-radius: 3px;
+}
+
+input:focus,
+select:focus {
+  outline: 1px solid var(--inputFocusBorder);
+}
+
+canvas {
+  display: block;
+}
+
+section {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+#screen-log {
+  width: 100%;
+  height: 100px;
+  overflow: auto;
+  background-color: #f0f0f0;
+  padding: 1rem;
+}

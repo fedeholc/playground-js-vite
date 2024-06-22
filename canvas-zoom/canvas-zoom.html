@@ -5,33 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zoom en Imagen</title>
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+  <link rel="stylesheet" href="styles.css">
 
-    canvas {
-      display: block;
-    }
-
-    section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    #screen-log {
-      width: 100%;
-      height: 100px;
-      overflow: auto;
-      background-color: #f0f0f0;
-      padding: 1rem;
-    }
-  </style>
 </head>
 
 <body>
@@ -63,6 +38,12 @@
     <div>
       <label>Last frame duration (seconds)</label>
       <input type="number" id="last-frame-duration" name="last-frame-duration" placeholder=1 value=1 />
+    </div>
+    <div><label for="zoom-fit">Zoom fit</label>
+      <select name="zoom-fit" id="zoom-fit">
+        <option value="fitHeight">Height</option>
+        <option value="fitWidth">Width</option>
+      </select>
     </div>
   </section>
   <br />
