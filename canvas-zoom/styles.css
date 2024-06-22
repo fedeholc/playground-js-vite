@@ -105,6 +105,14 @@ body {
   font-family: 'Courier New', Courier, monospace;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+  padding: 1rem;
+}
+
 button {
   padding: 0.5rem;
   font-size: 0.9rem;
@@ -121,7 +129,7 @@ button:hover {
   color: var(--color1);
 }
 
-input,
+/* input,
 select {
   padding: 0.3rem;
   font-size: 0.9rem;
@@ -133,7 +141,29 @@ select {
 
 input:focus,
 select:focus {
-  outline: 1px solid var(--inputFocusBorder);
+  outline: 2px solid var(--inputFocusBorder);
+} */
+
+input,
+select {
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  border: none;
+  border-bottom: 2px solid var(--inputBorder);
+  background-color: var(--inputBG);
+  color: var(--inputFont);
+  border-radius: 0px;
+  text-align: right;
+}
+
+input[type="number"] {
+  max-width: 64px;
+}
+
+input:focus,
+select:focus {
+  border-bottom: 2px solid var(--inputBG);
+  outline: 2px solid var(--inputBorder);
 }
 
 canvas {
@@ -144,9 +174,38 @@ section {
   gap: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+
   padding: 1rem;
+  border: 1px solid var(--color6);
 }
+
+summary {
+  cursor: pointer;
+  padding-bottom: 1rem;
+  color: var(--color13);
+}
+
+details[open] summary {
+  color: var(--color15);
+}
+
+
+.inputs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* .inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+
+  label {
+    text-align: right;
+  }
+} */
+
 
 #screen-log {
   width: 100%;
