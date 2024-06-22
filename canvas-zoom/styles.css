@@ -11,6 +11,11 @@ https: //lospec.com/palette-list/tokyo-night
   --inputBorder: var(--color7);
   --inputFocusBorder: var(--color14);
 
+  --button: var(--color20);
+  --buttonBG: var(--color1);
+  --buttonShadow: var(--color3);
+
+
   --color1: #1f2335;
   --color1b: hsl(229, 20%, 16%);
   --color2: #24283b;
@@ -37,6 +42,8 @@ https: //lospec.com/palette-list/tokyo-night
   --color23: #ff757f;
   --color24: #c53b53;
   --color25: #ff007c;
+
+
 
 }
 
@@ -98,6 +105,22 @@ body {
   font-family: 'Courier New', Courier, monospace;
 }
 
+button {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--button);
+  background-color: var(--buttonBG);
+  color: var(--button);
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px 0px var(--buttonShadow);
+}
+
+button:hover {
+  background-color: var(--color20);
+  color: var(--color1);
+}
+
 input,
 select {
   padding: 0.3rem;
@@ -105,7 +128,7 @@ select {
   border: 1px solid var(--inputBorder);
   background-color: var(--inputBG);
   color: var(--inputFont);
-  border-radius: 3px;
+  border-radius: 0px;
 }
 
 input:focus,
