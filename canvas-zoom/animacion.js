@@ -72,6 +72,7 @@ function handleDrop(e) {
   }
   if (files.length > 0) {
     loadImage(files[0]);
+    setUploadedUI();
   }
 }
 
@@ -104,9 +105,23 @@ const canvas = /** @type {HTMLCanvasElement} */ (
   document.getElementById("mi-canvas")
 );
 
+const uploadedImage = document.querySelector("#uploaded-image");
+const uploadedImageContainer = document.querySelector(
+  "#uploaded-image-container"
+);
+uploadedImageContainer.classList.add("hidden");
+uploadedImageContainer.classList.remove("uploaded-image-container");
+
+const restartButton = document.querySelector("#restart-button");
+restartButton.addEventListener("click", handleRestartButton);
+
+const restartContainer = document.querySelector("#restart-container");
+restartContainer.classList.remove("restart-container");
+restartContainer.classList.add("hidden");
+
 const ctx = canvas.getContext("2d");
 
-const imageLoader = document.getElementById("image-loader");
+const imageLoader = document.getElementById("input-upload");
 imageLoader.addEventListener("change", handleUpload, false);
 
 document.querySelector("#btn-pan2end").addEventListener("click", handlePan2end);
@@ -121,14 +136,31 @@ const ffmpeg = new FFmpeg({
 
 let img = new Image();
 
+function handleRestartButton() {
+  formUpload.classList.remove("hidden");
+  restartContainer.classList.add("hidden");
+  restartContainer.classList.remove("restart-container");
+  uploadedImage.setAttribute("src", "");
+  uploadedImageContainer.classList.add("hidden");
+  uploadedImageContainer.classList.remove("uploaded-image-container");
+}
+
 /**
  * @param {Event} e
  */
 function handleUpload(e) {
   const input = /** @type {HTMLInputElement} */ (e.target);
   loadImage(input.files[0]);
+  setUploadedUI();
 }
 
+function setUploadedUI() {
+  formUpload.classList.add("hidden");
+  restartContainer.classList.remove("hidden");
+  restartContainer.classList.add("restart-container");
+  uploadedImageContainer.classList.remove("hidden");
+  uploadedImageContainer.classList.add("uploaded-image-container");
+}
 /**
  * @param {Blob} file
  */
@@ -160,6 +192,7 @@ function loadImage(file) {
 
     if (typeof event.target.result === "string") {
       img.src = event.target.result;
+      uploadedImage.setAttribute("src", event.target.result);
     } else {
       console.error("No se pudo cargar la imagen");
       //TODO: ver cómo hice la carga de archivo y manejo de errores en fotoyop

@@ -15,6 +15,9 @@ https: //lospec.com/palette-list/tokyo-night
   --buttonBG: var(--color1);
   --buttonShadow: var(--color3);
 
+  --imageBorder: var(--midGray20);
+
+  --midGray20: rgba(128, 128, 128, 0.2);
 
   --color1: #1f2335;
   --color1b: hsl(229, 20%, 16%);
@@ -126,8 +129,8 @@ input::file-selector-button {
 }
 
 button:hover {
-  background-color: var(--color20);
-  color: var(--color1);
+  background-color: var(--button);
+  color: var(--buttonBG);
 }
 
 /* input,
@@ -253,7 +256,29 @@ details[open] summary {
 
 }
 
+.hidden {
+  display: none;
+}
 
+.restart-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.separator {
+  border-top: 1px solid var(--color3);
+}
+
+#uploaded-image {
+  max-width: 250px;
+}
+
+.uploaded-image-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: 1px solid var(--imageBorder);
+}
 
 #form-upload:hover {
   cursor: pointer;

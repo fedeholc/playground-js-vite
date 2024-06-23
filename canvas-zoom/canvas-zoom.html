@@ -22,29 +22,28 @@
 .::          .::::          .::        .::::                 .::      
 </pre>
 
-
+    <span class="separator"></span>
     <form id="form-upload">
-
       <div class="drop-container" id="drop-container">
-
         <span class="drop-title unselectable">
           Drop file here
         </span>
-
-
         <span class="drop-title unselectable">
           or
         </span>
-
         <span class="drop-title unselectable">
           click / tap to upload
         </span>
-
-
         <input type="file" id="input-upload" accept="image/*" style="display: none;" multiple="false"></input>
       </div>
 
     </form>
+    <div class="restart-container" id="restart-container">
+      <button id="restart-button">Restart</button>
+    </div>
+    <section class="uploaded-image-container" id="uploaded-image-container">
+      <img id="uploaded-image" src="" alt="uploaded image" />
+    </section>
 
     <section>
       <details>
@@ -70,7 +69,14 @@
             <input type="number" id="divide-by" name="divide-by" placeholder=2 value=2 />
           </div>
         </div>
-
+        <div style="display: grid;align-items: center;
+                justify-content: center;
+                justify-items: center;
+                align-content: center;
+                max-width: 250px;
+                ">
+          <canvas style="width: 100%; height: 100%" id="mi-canvas"></canvas>
+        </div>
       </details>
     </section>
     <section>
@@ -108,17 +114,7 @@
       </details>
     </section>
     <br />
-    <section>
-      <input type="file" id="image-loader" name="image-loader" />
-      <div style="display: grid;align-items: center;
-        justify-content: center;
-        justify-items: center;
-        align-content: center;
-        max-width: 250px;
-        ">
-        <canvas style="width: 100%; height: 100%" id="mi-canvas"></canvas>
-      </div>
-    </section>
+
     <section>
       <button id="btn-pan2end">Generar Vid: Pan2end</button>
       <button id="btn-zoom-out">Generar Vid: zoomOut</button>
