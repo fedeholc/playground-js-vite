@@ -215,6 +215,49 @@ details[open] summary {
   }
 } */
 
+.unselectable {
+  user-select: none;
+}
+
+.drop-container {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 5rem;
+  border: 2px dashed var(--color18);
+  cursor: pointer;
+}
+
+
+
+.drop-title {
+  color: var(--color18);
+  padding: 1.2rem 0.5rem;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+
+
+.drop-container:hover .drop-title,
+.drop-title-dragover {
+  color: var(--color20);
+}
+
+.drop-container:hover,
+.drop-container-dragover {
+  border: 2px dashed var(--color20);
+
+}
+
+
+
+#form-upload:hover {
+  cursor: pointer;
+}
 
 #screen-log {
   width: 100%;

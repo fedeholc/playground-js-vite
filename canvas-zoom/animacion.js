@@ -13,6 +13,68 @@ GlobalScreenLogger.init(screenLogDiv);
 GlobalScreenLogger.log("Hola, mundo!");
 GlobalScreenLogger.log("Este es otro mensaje.");
 
+const formUpload = document.querySelector("#form-upload");
+formUpload.addEventListener("click", handleUploadFormClick);
+formUpload.addEventListener("input", handleUpload);
+console.log(formUpload);
+
+function handleUploadFormClick() {
+  /** @type {HTMLInputElement} */
+  let input = document.querySelector("#input-upload");
+  input.click();
+}
+
+const dropContainer = document.querySelector("#drop-container");
+dropContainer.addEventListener("dragover", handleDragOver);
+dropContainer.addEventListener("drop", handleDrop);
+dropContainer.addEventListener("dragleave", handleDragLeave);
+
+/**
+ * @param {Event} e
+ */
+function handleDragOver(e) {
+  e.preventDefault();
+  let dropTitles = document.querySelectorAll(".drop-title");
+  dropTitles.forEach((title) => {
+    title.classList.add("drop-title-dragover");
+  });
+
+  let dropContainer = document.querySelector(".drop-container");
+  dropContainer?.classList.add("drop-container-dragover");
+}
+
+function handleDragLeave() {
+  let dropTitles = document.querySelectorAll(".drop-title");
+  dropTitles.forEach((title) => {
+    title.classList.remove("drop-title-dragover");
+  });
+  let dropContainer = document.querySelector(".drop-container");
+  dropContainer?.classList.remove("drop-container-dragover");
+}
+
+/**
+ * @param {DragEvent} e
+ */
+function handleDrop(e) {
+  e.preventDefault();
+  handleDragLeave();
+  const files = [];
+
+  if (e.dataTransfer.items) {
+    for (let i = 0; i < e.dataTransfer.items.length; i++) {
+      if (e.dataTransfer.items[i].kind === "file") {
+        const file = e.dataTransfer.items[i].getAsFile();
+        if (file) {
+          files.push(file);
+        }
+      }
+    }
+  }
+  if (files.length > 0) {
+    loadImage(files[0]);
+  }
+}
+
 const inputPixelsShift = /** @type {HTMLInputElement} */ (
   document.querySelector("#pixels-shift")
 );
@@ -63,7 +125,14 @@ let img = new Image();
  * @param {Event} e
  */
 function handleUpload(e) {
-  console.log("inicio de handleImage");
+  const input = /** @type {HTMLInputElement} */ (e.target);
+  loadImage(input.files[0]);
+}
+
+/**
+ * @param {Blob} file
+ */
+function loadImage(file) {
   const reader = new FileReader();
   reader.onload = function (event) {
     img.onload = function () {
@@ -96,8 +165,7 @@ function handleUpload(e) {
       //TODO: ver cómo hice la carga de archivo y manejo de errores en fotoyop
     }
   };
-  const input = /** @type {HTMLInputElement} */ (e.target);
-  reader.readAsDataURL(input.files[0]);
+  reader.readAsDataURL(file);
 }
 
 function configSizes() {

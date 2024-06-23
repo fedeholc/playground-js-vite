@@ -22,6 +22,30 @@
 .::          .::::          .::        .::::                 .::      
 </pre>
 
+
+    <form id="form-upload">
+
+      <div class="drop-container" id="drop-container">
+
+        <span class="drop-title unselectable">
+          Drop file here
+        </span>
+
+
+        <span class="drop-title unselectable">
+          or
+        </span>
+
+        <span class="drop-title unselectable">
+          click / tap to upload
+        </span>
+
+
+        <input type="file" id="input-upload" accept="image/*" style="display: none;" multiple="false"></input>
+      </div>
+
+    </form>
+
     <section>
       <details>
         <summary>Output video</summary>
@@ -99,9 +123,9 @@
       <button id="btn-pan2end">Generar Vid: Pan2end</button>
       <button id="btn-zoom-out">Generar Vid: zoomOut</button>
     </section>
-  <section>
-    <div id="screen-log"></div>
-  </section>
+    <section>
+      <div id="screen-log"></div>
+    </section>
   </main>
   <script type="module" src="animacion.js" async defer></script>
 </body>
