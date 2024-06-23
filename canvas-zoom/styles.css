@@ -274,6 +274,20 @@ details[open] summary {
   border-top: 1px solid var(--separator);
 }
 
+.label-selected {
+  color: var(--color21);
+}
+
+#effects-section summary {
+  padding: 1rem;
+}
+
+#effects-container .container-selected {
+  border: 2px solid var(--color16);
+
+  background-color: var(--color2);
+}
+
 #uploaded-image {
   max-width: 250px;
 }
@@ -297,15 +311,11 @@ details[open] summary {
   padding: 1rem;
 }
 
-
-
 #effects-section {
   gap: 1rem;
   display: flex;
   flex-direction: column;
-
   border: 1px solid var(--midGray20);
-
 }
 
 #effects-container {
@@ -317,17 +327,21 @@ details[open] summary {
 
 #effects-container>div {
   padding: 1rem;
-  border: 1px solid transparent;
+  cursor: pointer;
+  /*   border: 1px solid transparent;
+ */
+
 }
 
 #effects-container>div:hover {
-  outline: 2px solid var(--color19);
-  color: var(--color19);
-
+  /*   outline: 2px solid var(--color19);
+ */
+  color: var(--color21);
+  background-color: var(--color2);
 }
 
 #effects-container label,
 #effects-container input {
   cursor: pointer;
-  accent-color: var(--color19);
+  accent-color: var(--color21);
 }

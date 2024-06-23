@@ -45,16 +45,20 @@
       <img id="uploaded-image" src="" alt="uploaded image" />
     </section>
     <div id="effects-section">
-      <div id="effects-container">
-        <div>
-          <input type="radio" id="radio-pan2end" name="effects" value="pan2end" checked>
-          <label for="radio-pan2end">Pan2end</label>
+      <details>
+        <summary>Effect</summary>
+        <div></div>
+        <div id="effects-container">
+          <div id="pan2end-container">
+            <input type="radio" id="pan2end-radio" name="effects" value="pan2end">
+            <label id="pan2end-label" for="radio-pan2end">Pan2end</label>
+          </div>
+          <div id="zoom-container">
+            <input type="radio" id="zoom-radio" name="effects" value="zoom">
+            <label id="zoom-label" for="radio-zoom">Zoom</label>
+          </div>
         </div>
-        <div>
-          <input type="radio" id="radio-zoom" name="effects" value="zoom" checked>
-          <label for="radio-zoom">Zoom</label>
-        </div>
-      </div>
+      </details>
     </div>
     <section>
       <details>

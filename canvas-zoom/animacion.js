@@ -70,6 +70,18 @@ pan2endButton.addEventListener("click", handlePan2end);
 const zoomOutButton = document.querySelector("#btn-zoom-out");
 zoomOutButton.addEventListener("click", handleZoomOut);
 
+const pan2endContainer = document.querySelector("#pan2end-container");
+const pan2endLabel = document.querySelector("#pan2end-label");
+/** @type {HTMLInputElement} */
+const pan2endRadio = document.querySelector("#pan2end-radio");
+pan2endContainer.addEventListener("click", handleRadioPan2end);
+
+const zoomOutContainer = document.querySelector("#zoom-container");
+const zoomOutLabel = document.querySelector("#zoom-label");
+/** @type {HTMLInputElement} */
+const zoomOutRadio = document.querySelector("#zoom-radio");
+zoomOutContainer.addEventListener("click", handleRadioZoomOut);
+
 // Main # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 GlobalScreenLogger.init(screenLogDiv);
@@ -92,6 +104,22 @@ function initUI() {
   restartContainer.classList.remove("restart-container");
   restartContainer.classList.add("hidden");
 }
+
+function handleRadioPan2end() {
+  pan2endRadio.checked = true;
+  pan2endLabel.classList.add("label-selected");
+  pan2endContainer.classList.add("container-selected");
+  zoomOutLabel.classList.remove("label-selected");
+  zoomOutContainer.classList.remove("container-selected");
+}
+function handleRadioZoomOut() {
+  pan2endLabel.classList.remove("label-selected");
+  pan2endContainer.classList.remove("container-selected");
+  zoomOutRadio.checked = true;
+  zoomOutLabel.classList.add("label-selected");
+  zoomOutContainer.classList.add("container-selected");
+}
+
 function handleUploadFormClick() {
   /** @type {HTMLInputElement} */
   let input = document.querySelector("#input-upload");
