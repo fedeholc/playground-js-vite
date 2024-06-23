@@ -25,7 +25,6 @@ const inputLastFrameDuration = /** @type {HTMLInputElement} */ (
 const inputTotalFrames = /** @type {HTMLInputElement} */ (
   document.querySelector("#total-frames")
 );
-
 const inputCanvasHeight = /** @type {HTMLInputElement} */ (
   document.querySelector("#canvas-height")
 );

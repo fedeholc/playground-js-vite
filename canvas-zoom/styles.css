@@ -113,7 +113,8 @@ main {
   padding: 1rem;
 }
 
-button {
+button,
+input::file-selector-button {
   padding: 0.5rem;
   font-size: 0.9rem;
   border: 1px solid var(--button);
@@ -165,6 +166,7 @@ select:focus {
   border-bottom: 2px solid var(--inputBG);
   outline: 2px solid var(--inputBorder);
 }
+
 
 canvas {
   display: block;
