@@ -23,7 +23,12 @@ export function createFramesPan2end(canvas, img, pixelsShift) {
 
     function step() {
       //console.log("step", counter, (img.width - canvas.width) / pixelsShift);
-      //GlobalScreenLogger.log(`step ${counter} de ${(img.width - canvas.width) / pixelsShift}`);
+      GlobalScreenLogger.log(
+        `> Step 1 of 4 <br>
+        > Creating frame ${counter} of ${
+          Math.round(img.width - canvas.width) / pixelsShift
+        }`
+      );
 
       ctx.drawImage(img, 0 - counter * pixelsShift, 0, img.width, img.height);
       videoFrames.push(canvas.toDataURL("image/png"));

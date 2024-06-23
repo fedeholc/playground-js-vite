@@ -42,7 +42,8 @@ export class ScreenLogger {
     }
     const logMessage = document.createElement("div");
     logMessage.textContent = message;
-    this.element.appendChild(logMessage);
+    //this.element.appendChild(logMessage);
+    this.element.innerHTML = message;
   }
 }
 

@@ -16,18 +16,6 @@ import { createFramesPan2end, createFramesZoomOut } from "./createFrames.js";
 const screenLogDiv =
   /** @type {HTMLDivElement} */ document.getElementById("screen-log");
 
-const inputPixelsShift = /** @type {HTMLInputElement} */ (
-  document.querySelector("#pixels-shift")
-);
-const inputFrameRate = /** @type {HTMLInputElement} */ (
-  document.querySelector("#frame-rate")
-);
-const inputLastFrameDuration = /** @type {HTMLInputElement} */ (
-  document.querySelector("#last-frame-duration")
-);
-const inputTotalFrames = /** @type {HTMLInputElement} */ (
-  document.querySelector("#total-frames")
-);
 const inputCanvasHeight = /** @type {HTMLInputElement} */ (
   document.querySelector("#canvas-height")
 );
@@ -37,9 +25,7 @@ const inputCanvasWidth = /** @type {HTMLInputElement} */ (
 const inputDivideBy = /** @type {HTMLInputElement} */ (
   document.querySelector("#divide-by")
 );
-const selectZoomFit = /** @type {HTMLSelectElement} */ (
-  document.querySelector("#zoom-fit")
-);
+
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.getElementById("mi-canvas")
 );
@@ -64,12 +50,15 @@ dropContainer.addEventListener("dragover", handleDragOver);
 dropContainer.addEventListener("drop", handleDrop);
 dropContainer.addEventListener("dragleave", handleDragLeave);
 
-const pan2endButton = document.querySelector("#btn-pan2end");
+const createVideoButton = document.querySelector("#create-video-button");
+createVideoButton.addEventListener("click", handleCreateVideo);
+
+/* const pan2endButton = document.querySelector("#btn-pan2end");
 pan2endButton.addEventListener("click", handlePan2end);
 
 const zoomOutButton = document.querySelector("#btn-zoom-out");
 zoomOutButton.addEventListener("click", handleZoomOut);
-
+ */
 const pan2endContainer = document.querySelector("#pan2end-container");
 const pan2endLabel = document.querySelector("#pan2end-label");
 /** @type {HTMLInputElement} */
@@ -82,17 +71,24 @@ const zoomOutLabel = document.querySelector("#zoom-label");
 const zoomOutRadio = document.querySelector("#zoom-radio");
 zoomOutContainer.addEventListener("click", handleRadioZoomOut);
 
+const screenLogContainer = document.querySelector("#screen-log");
+const downloadVideoButton = document.querySelector("#download-button");
+downloadVideoButton.addEventListener("click", handleDownloadVideo);
+
 // Main # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 GlobalScreenLogger.init(screenLogDiv);
-GlobalScreenLogger.log("Hola, mundo!");
-GlobalScreenLogger.log("Este es otro mensaje.");
+GlobalScreenLogger.log(
+  "Hola, mundo! <br> Hola, mundo! Hola, mundo! Hola, mundo!"
+);
 
 const ctx = canvas.getContext("2d");
 const ffmpeg = new FFmpeg({
   config: "gpl-extended",
 });
 const img = new Image();
+
+let videoToDownload;
 
 initUI();
 
@@ -103,6 +99,26 @@ function initUI() {
   uploadedImageContainer.classList.remove("uploaded-image-container");
   restartContainer.classList.remove("restart-container");
   restartContainer.classList.add("hidden");
+  screenLogContainer.classList.remove("screen-log");
+  screenLogContainer.classList.add("hidden");
+  pan2endRadio.checked = false;
+  zoomOutRadio.checked = false;
+  pan2endContainer.classList.remove("container-selected");
+  pan2endLabel.classList.remove("label-selected");
+  zoomOutContainer.classList.remove("container-selected");
+  zoomOutLabel.classList.remove("label-selected");
+  
+  downloadVideoButton.classList.add("hidden");
+
+  //createVideoButton.classList.add("hidden");
+}
+
+function handleCreateVideo() {
+  if (pan2endRadio.checked) {
+    handlePan2end();
+  } else if (zoomOutRadio.checked) {
+    handleZoomOut();
+  }
 }
 
 function handleRadioPan2end() {
@@ -111,6 +127,7 @@ function handleRadioPan2end() {
   pan2endContainer.classList.add("container-selected");
   zoomOutLabel.classList.remove("label-selected");
   zoomOutContainer.classList.remove("container-selected");
+  //createVideoButton.classList.remove("hidden");
 }
 function handleRadioZoomOut() {
   pan2endLabel.classList.remove("label-selected");
@@ -118,6 +135,7 @@ function handleRadioZoomOut() {
   zoomOutRadio.checked = true;
   zoomOutLabel.classList.add("label-selected");
   zoomOutContainer.classList.add("container-selected");
+  //createVideoButton.classList.remove("hidden");
 }
 
 function handleUploadFormClick() {
@@ -133,6 +151,7 @@ function handleRestartButton() {
   uploadedImage.setAttribute("src", "");
   uploadedImageContainer.classList.add("hidden");
   uploadedImageContainer.classList.remove("uploaded-image-container");
+  initUI();
 }
 
 /**
@@ -205,12 +224,32 @@ function configSizes() {
   img.width = oldWidth * (canvas.height / oldHeight);
 }
 
+function handleDownloadVideo() {
+  downloadVideo(videoToDownload);
+}
+
 async function handlePan2end() {
   //var inicio = Date.now();
   //console.log("start creación frames  ", Date.now());
 
+  createVideoButton.classList.add("hidden");
+
+  GlobalScreenLogger.log(`Let's go!`);
+  screenLogContainer.classList.add("screen-log");
+  screenLogContainer.classList.remove("hidden");
+
   // sets the canvas size and the image size acording to the inputs
   configSizes();
+
+  const inputPixelsShift = /** @type {HTMLInputElement} */ (
+    document.querySelector("#pan2end-pixels-shift")
+  );
+  const inputFrameRate = /** @type {HTMLInputElement} */ (
+    document.querySelector("#frame-rate")
+  );
+  const inputLastFrameRepeat = /** @type {HTMLInputElement} */ (
+    document.querySelector("#pan2end-last-frame")
+  );
 
   let videoFrames = await createFramesPan2end(
     canvas,
@@ -221,9 +260,17 @@ async function handlePan2end() {
 
   //var inicio = Date.now();
   //console.log("inicio de ffmpeg", Date.now());
-  let video = await createVideo(videoFrames);
+  let video = await createVideo(
+    videoFrames,
+    parseInt(inputFrameRate.value),
+    parseInt(inputLastFrameRepeat.value)
+  );
   //console.log("fin ffmpeg  ", Date.now() - inicio);
-  downloadVideo(video);
+  GlobalScreenLogger.log(`Your video is ready!`);
+
+  videoToDownload = video;
+
+  downloadVideoButton.classList.remove("hidden");
 }
 
 async function handleZoomOut() {
@@ -233,11 +280,28 @@ async function handleZoomOut() {
   // sets the canvas size and the image size acording to the inputs
   configSizes();
 
+  const selectZoomFit = /** @type {HTMLSelectElement} */ (
+    document.querySelector("#zoomout-fit")
+  );
+
   /** @type {"fitHeight" | "fitWidth"} */
   let zoomFit = "fitHeight";
   if (selectZoomFit.value === "fitWidth") {
     zoomFit = "fitWidth";
   }
+
+  const inputTotalFrames = /** @type {HTMLInputElement} */ (
+    document.querySelector("#zoomout-total-frames")
+  );
+  const inputPixelsShift = /** @type {HTMLInputElement} */ (
+    document.querySelector("#zoomout-pixels-shift")
+  );
+  const inputFrameRate = /** @type {HTMLInputElement} */ (
+    document.querySelector("#frame-rate")
+  );
+  const inputLastFrameRepeat = /** @type {HTMLInputElement} */ (
+    document.querySelector("#zoomout-last-frame")
+  );
 
   let videoFrames = await createFramesZoomOut(
     canvas,
@@ -250,7 +314,11 @@ async function handleZoomOut() {
 
   //var inicio = Date.now();
   //console.log("inicio de ffmpeg", Date.now());
-  let video = await createVideo(videoFrames);
+  let video = await createVideo(
+    videoFrames,
+    parseInt(inputFrameRate.value),
+    parseInt(inputLastFrameRepeat.value)
+  );
   //console.log("fin ffmpeg  ", Date.now() - inicio);
   downloadVideo(video);
 }
@@ -305,29 +373,42 @@ function handleDrop(e) {
 //TODO: catch del error para el reject?
 /**
  * @param {string[]} videoFrames
+ * @param {number} frameRate
+ * @param {number} lastFrameRepeat
  */
-async function createVideo(videoFrames) {
+async function createVideo(videoFrames, frameRate, lastFrameRepeat) {
   return new Promise((resolve, reject) => {
     ffmpeg.whenReady(async () => {
       for (let i = 0; i < videoFrames.length; i++) {
         console.log("frame", i);
+        GlobalScreenLogger.log(
+          `> Step 2 of 4 <br> 
+           > Writing frame ${i + 1} of ${videoFrames.length + 1}`
+        );
         await ffmpeg.writeFile(`input${i + 1}.png`, videoFrames[i]);
       }
 
+      GlobalScreenLogger.log(
+        `> Step 3 of 4<br> 
+         > Creating video (it may take a while...)`
+      );
       // no cambiar el orden de estos parametros porque se rompe
       await ffmpeg.exec([
         "-framerate",
-        `${inputFrameRate.value}`,
+        `${frameRate}`,
         "-i",
         "input%d.png", // Plantilla de entrada
         "-vf",
-        `tpad=stop_mode=clone:stop_duration=${inputLastFrameDuration.value}`, // Filtro para extender el último frame
+        `tpad=stop_mode=clone:stop_duration=${lastFrameRepeat}`, // Filtro para extender el último frame
         "-c:v",
         "libx264",
         "-pix_fmt",
         "yuv420p",
         "output.mp4",
       ]);
+
+      GlobalScreenLogger.log(`> Step 4 of 4 <br> 
+        > Writing video file`);
 
       let rta = ffmpeg.readFile("output.mp4");
       resolve(rta);

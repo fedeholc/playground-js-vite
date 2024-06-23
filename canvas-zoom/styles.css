@@ -278,6 +278,18 @@ details[open] summary {
   color: var(--color21);
 }
 
+#create-video-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#create-video-container>div {
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+}
+
 #effects-section summary {
   padding: 1rem;
 }
@@ -303,12 +315,19 @@ details[open] summary {
   cursor: pointer;
 }
 
-#screen-log {
-  width: 100%;
+
+
+
+.screen-log {
+  max-width: 300px;
   height: 100px;
-  overflow: auto;
-  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--color1b);
+  color: var(--color19);
   padding: 1rem;
+  border: 2px dashed var(--color19);
 }
 
 #effects-section {

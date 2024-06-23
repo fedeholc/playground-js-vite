@@ -51,15 +51,58 @@
         <div id="effects-container">
           <div id="pan2end-container">
             <input type="radio" id="pan2end-radio" name="effects" value="pan2end">
-            <label id="pan2end-label" for="radio-pan2end">Pan2end</label>
+            <label id="pan2end-label" for="pan2end-radio">Pan2end</label>
           </div>
           <div id="zoom-container">
             <input type="radio" id="zoom-radio" name="effects" value="zoom">
-            <label id="zoom-label" for="radio-zoom">Zoom</label>
+            <label id="zoom-label" for="zoom-radio">Zoom</label>
           </div>
         </div>
       </details>
     </div>
+
+    <section>
+      <details>
+        <summary>Pan2end settings</summary>
+        <div class="inputs-grid">
+          <div>
+            <label>Pixels shift (per frame)</label>
+            <input type="number" id="pan2end-pixels-shift" name="pan2end-pixels-shift" placeholder=2 value=2 />
+          </div>
+          <div>
+            <label>Last frame repeat (in seconds)</label>
+            <input type="number" id="pan2end-last-frame" name="pan2end-last-frame" placeholder=0 value=0 />
+          </div>
+
+        </div>
+      </details>
+    </section>
+    <section>
+      <details>
+        <summary>Zoom Out settings</summary>
+        <div class="inputs-grid">
+          <div>
+            <label>Pixels shift (per frame)</label>
+            <input type="number" id="zoomout-pixels-shift" name="zoomout-pixels-shift" placeholder=2 value=2 />
+          </div>
+          <div>
+            <label>Total frames</label>
+            <input type="number" id="zoomout-total-frames" name="zoomout-total-frames" placeholder=60 value=60 />
+          </div>
+          <div>
+            <label>Last frame repeat (in seconds)</label>
+            <input type="number" id="zoomout-last-frame" name="zoomout-last-frame" placeholder=0 value=0 />
+          </div>
+          <div>
+            <label for="zoomout-fit">Zoom fit</label>
+            <select name="zoomout-fit" id="zoomout-fit">
+              <option value="fitHeight">Height</option>
+              <option value="fitWidth">Width</option>
+            </select>
+          </div>
+        </div>
+      </details>
+    </section>
     <section>
       <details>
         <summary>Output video</summary>
@@ -85,58 +128,29 @@
           </div>
         </div>
         <div style="display: grid;align-items: center;
-                justify-content: center;
-                justify-items: center;
-                align-content: center;
-                max-width: 250px;
-                ">
+                    justify-content: center;
+                    justify-items: center;
+                    align-content: center;
+                    max-width: 250px;
+                    ">
           <canvas style="width: 100%; height: 100%" id="mi-canvas"></canvas>
         </div>
       </details>
     </section>
-    <section>
-      <details>
-        <summary>cccc</summary>
-        <div class="inputs-grid">
-
-          <div>
-            <label>Pixels shift (per frame)</label>
-            <input type="number" id="pixels-shift" name="pixels-shift" placeholder=2 value=2 />
-          </div>
 
 
+    <div id="create-video-container">
+      <div id="screen-log-container">
+        <div id="screen-log" class="screen-log"></div>
+      </div>
+      <div><button id="create-video-button">CREATE VIDEO</button></div>
+      <div><button id="download-button">DOWNLOAD VIDEO</button></div>
 
-
-          <div>
-            <label>Total frames</label>
-            <input type="number" id="total-frames" name="total-frames" placeholder=60 value=60 />
-          </div>
-
-          <div>
-            <label>Last frame duration (seconds)</label>
-            <input type="number" id="last-frame-duration" name="last-frame-duration" placeholder=1 value=1 />
-          </div>
-
-          <div>
-            <label for="zoom-fit">Zoom fit</label>
-            <select name="zoom-fit" id="zoom-fit">
-              <option value="fitHeight">Height</option>
-              <option value="fitWidth">Width</option>
-            </select>
-          </div>
-
-        </div>
-      </details>
-    </section>
-    <br />
-
-    <section>
-      <button id="btn-pan2end">Generar Vid: Pan2end</button>
-      <button id="btn-zoom-out">Generar Vid: zoomOut</button>
-    </section>
-    <section>
-      <div id="screen-log"></div>
-    </section>
+      <!-- <button id="btn-pan2end">Generar Vid: Pan2end</button>
+      <button id="btn-zoom-out">Generar Vid: zoomOut</button> -->
+    </div>
+    <div>
+    </div>
   </main>
   <script type="module" src="animacion.js" async defer></script>
 </body>
