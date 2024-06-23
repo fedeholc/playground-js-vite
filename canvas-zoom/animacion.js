@@ -53,19 +53,15 @@ dropContainer.addEventListener("dragleave", handleDragLeave);
 const createVideoButton = document.querySelector("#create-video-button");
 createVideoButton.addEventListener("click", handleCreateVideo);
 
-/* const pan2endButton = document.querySelector("#btn-pan2end");
-pan2endButton.addEventListener("click", handlePan2end);
+const effecstDetails = document.querySelector("#effects-details");
 
-const zoomOutButton = document.querySelector("#btn-zoom-out");
-zoomOutButton.addEventListener("click", handleZoomOut);
- */
-const pan2endContainer = document.querySelector("#pan2end-container");
+const pan2endContainer = document.querySelector("#pan2end-radio-container");
 const pan2endLabel = document.querySelector("#pan2end-label");
 /** @type {HTMLInputElement} */
 const pan2endRadio = document.querySelector("#pan2end-radio");
 pan2endContainer.addEventListener("click", handleRadioPan2end);
 
-const zoomOutContainer = document.querySelector("#zoom-container");
+const zoomOutContainer = document.querySelector("#zoom-radio-container");
 const zoomOutLabel = document.querySelector("#zoom-label");
 /** @type {HTMLInputElement} */
 const zoomOutRadio = document.querySelector("#zoom-radio");
@@ -74,6 +70,9 @@ zoomOutContainer.addEventListener("click", handleRadioZoomOut);
 const screenLogContainer = document.querySelector("#screen-log");
 const downloadVideoButton = document.querySelector("#download-button");
 downloadVideoButton.addEventListener("click", handleDownloadVideo);
+
+const pan2endSection = document.querySelector("#pan2end-section");
+const zoomOutSection = document.querySelector("#zoomout-section");
 
 // Main # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -107,13 +106,23 @@ function initUI() {
   pan2endLabel.classList.remove("label-selected");
   zoomOutContainer.classList.remove("container-selected");
   zoomOutLabel.classList.remove("label-selected");
-  
-  downloadVideoButton.classList.add("hidden");
 
+  pan2endSection.classList.add("hidden");
+  zoomOutSection.classList.add("hidden");
+
+  /*  effecstDetails.removeAttribute("open");
+  effecstDetails.addEventListener("click", function (e) {
+    e.preventDefault();
+  }); */
+
+  downloadVideoButton.classList.add("hidden");
   //createVideoButton.classList.add("hidden");
 }
 
 function handleCreateVideo() {
+  if (img.src === "") {
+    return;
+  }
   if (pan2endRadio.checked) {
     handlePan2end();
   } else if (zoomOutRadio.checked) {
@@ -127,6 +136,12 @@ function handleRadioPan2end() {
   pan2endContainer.classList.add("container-selected");
   zoomOutLabel.classList.remove("label-selected");
   zoomOutContainer.classList.remove("container-selected");
+
+  pan2endSection.classList.remove("hidden");
+  document.querySelector("#pan2end-section details").setAttribute("open", "");
+
+  zoomOutSection.classList.add("hidden");
+
   //createVideoButton.classList.remove("hidden");
 }
 function handleRadioZoomOut() {
@@ -135,6 +150,12 @@ function handleRadioZoomOut() {
   zoomOutRadio.checked = true;
   zoomOutLabel.classList.add("label-selected");
   zoomOutContainer.classList.add("container-selected");
+
+  zoomOutSection.classList.remove("hidden");
+  document.querySelector("#zoomout-section details").setAttribute("open", "");
+
+  pan2endSection.classList.add("hidden");
+
   //createVideoButton.classList.remove("hidden");
 }
 

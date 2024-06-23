@@ -45,15 +45,15 @@
       <img id="uploaded-image" src="" alt="uploaded image" />
     </section>
     <div id="effects-section">
-      <details>
+      <details id="effects-details">
         <summary>Effect</summary>
         <div></div>
         <div id="effects-container">
-          <div id="pan2end-container">
+          <div id="pan2end-radio-container">
             <input type="radio" id="pan2end-radio" name="effects" value="pan2end">
             <label id="pan2end-label" for="pan2end-radio">Pan2end</label>
           </div>
-          <div id="zoom-container">
+          <div id="zoom-radio-container">
             <input type="radio" id="zoom-radio" name="effects" value="zoom">
             <label id="zoom-label" for="zoom-radio">Zoom</label>
           </div>
@@ -61,7 +61,7 @@
       </details>
     </div>
 
-    <section>
+    <section id="pan2end-section" class="pan2end-section">
       <details>
         <summary>Pan2end settings</summary>
         <div class="inputs-grid">
@@ -77,7 +77,7 @@
         </div>
       </details>
     </section>
-    <section>
+    <section id="zoomout-section" class="zoomout-section">
       <details>
         <summary>Zoom Out settings</summary>
         <div class="inputs-grid">
@@ -143,7 +143,7 @@
       <div id="screen-log-container">
         <div id="screen-log" class="screen-log"></div>
       </div>
-      <div><button id="create-video-button">CREATE VIDEO</button></div>
+      <div><button id="create-video-button" class="disabled-gray">CREATE VIDEO</button></div>
       <div><button id="download-button">DOWNLOAD VIDEO</button></div>
 
       <!-- <button id="btn-pan2end">Generar Vid: Pan2end</button>

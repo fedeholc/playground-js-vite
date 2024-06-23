@@ -22,6 +22,9 @@ https: //lospec.com/palette-list/tokyo-night
 
   --imageBorder: var(--midGray20);
 
+  --disabledGray: var(--midgray80);
+
+  --midgray80: rgba(128, 128, 128, 0.8);
   --midGray20: rgba(128, 128, 128, 0.2);
 
   --color1: #1f2335;
@@ -133,9 +136,18 @@ input::file-selector-button {
   box-shadow: 4px 4px 0px 0px var(--buttonShadow);
 }
 
+
 button:hover {
   background-color: var(--button);
   color: var(--buttonBG);
+}
+
+button.disabled-gray {
+  background-color: var(--buttonBG);
+  border: 1px solid var(--disabledGray);
+  color: var(--disabledGray);
+  box-shadow: 4px 4px 0px 0px var(--buttonShadow);
+  cursor: not-allowed;
 }
 
 /* input,
