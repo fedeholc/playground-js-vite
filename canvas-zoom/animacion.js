@@ -3,78 +3,18 @@
 // VER ojo, en lugar de usar 5 paràmetros y hacer que la imagen arranca desde una x negativa para que haga el crop centrado, se podria usar la de 9 parametros y seleccionar desde donde se cropea la imagen
 // ver https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
 
+//
+//* imports
+//
 import { GlobalScreenLogger } from "./screenLogger.js";
 import { FFmpeg } from "@diffusion-studio/ffmpeg-js";
 import { createFramesPan2end, createFramesZoomOut } from "./createFrames.js";
 
-const screenLogDiv = document.getElementById("screen-log");
-
-GlobalScreenLogger.init(screenLogDiv);
-GlobalScreenLogger.log("Hola, mundo!");
-GlobalScreenLogger.log("Este es otro mensaje.");
-
-const formUpload = document.querySelector("#form-upload");
-formUpload.addEventListener("click", handleUploadFormClick);
-formUpload.addEventListener("input", handleUpload);
-console.log(formUpload);
-
-function handleUploadFormClick() {
-  /** @type {HTMLInputElement} */
-  let input = document.querySelector("#input-upload");
-  input.click();
-}
-
-const dropContainer = document.querySelector("#drop-container");
-dropContainer.addEventListener("dragover", handleDragOver);
-dropContainer.addEventListener("drop", handleDrop);
-dropContainer.addEventListener("dragleave", handleDragLeave);
-
-/**
- * @param {Event} e
- */
-function handleDragOver(e) {
-  e.preventDefault();
-  let dropTitles = document.querySelectorAll(".drop-title");
-  dropTitles.forEach((title) => {
-    title.classList.add("drop-title-dragover");
-  });
-
-  let dropContainer = document.querySelector(".drop-container");
-  dropContainer?.classList.add("drop-container-dragover");
-}
-
-function handleDragLeave() {
-  let dropTitles = document.querySelectorAll(".drop-title");
-  dropTitles.forEach((title) => {
-    title.classList.remove("drop-title-dragover");
-  });
-  let dropContainer = document.querySelector(".drop-container");
-  dropContainer?.classList.remove("drop-container-dragover");
-}
-
-/**
- * @param {DragEvent} e
- */
-function handleDrop(e) {
-  e.preventDefault();
-  handleDragLeave();
-  const files = [];
-
-  if (e.dataTransfer.items) {
-    for (let i = 0; i < e.dataTransfer.items.length; i++) {
-      if (e.dataTransfer.items[i].kind === "file") {
-        const file = e.dataTransfer.items[i].getAsFile();
-        if (file) {
-          files.push(file);
-        }
-      }
-    }
-  }
-  if (files.length > 0) {
-    loadImage(files[0]);
-    setUploadedUI();
-  }
-}
+//
+//* DOM elements and event listeners
+//
+const screenLogDiv =
+  /** @type {HTMLDivElement} */ document.getElementById("screen-log");
 
 const inputPixelsShift = /** @type {HTMLInputElement} */ (
   document.querySelector("#pixels-shift")
@@ -100,41 +40,63 @@ const inputDivideBy = /** @type {HTMLInputElement} */ (
 const selectZoomFit = /** @type {HTMLSelectElement} */ (
   document.querySelector("#zoom-fit")
 );
-
 const canvas = /** @type {HTMLCanvasElement} */ (
   document.getElementById("mi-canvas")
 );
-
 const uploadedImage = document.querySelector("#uploaded-image");
-const uploadedImageContainer = document.querySelector(
-  "#uploaded-image-container"
-);
-uploadedImageContainer.classList.add("hidden");
-uploadedImageContainer.classList.remove("uploaded-image-container");
 
 const restartButton = document.querySelector("#restart-button");
 restartButton.addEventListener("click", handleRestartButton);
 
 const restartContainer = document.querySelector("#restart-container");
-restartContainer.classList.remove("restart-container");
-restartContainer.classList.add("hidden");
-
-const ctx = canvas.getContext("2d");
+const uploadedImageContainer = document.querySelector(
+  "#uploaded-image-container"
+);
+const formUpload = document.querySelector("#form-upload");
+formUpload.addEventListener("click", handleUploadFormClick);
+formUpload.addEventListener("input", handleUpload);
 
 const imageLoader = document.getElementById("input-upload");
 imageLoader.addEventListener("change", handleUpload, false);
 
-document.querySelector("#btn-pan2end").addEventListener("click", handlePan2end);
+const dropContainer = document.querySelector("#drop-container");
+dropContainer.addEventListener("dragover", handleDragOver);
+dropContainer.addEventListener("drop", handleDrop);
+dropContainer.addEventListener("dragleave", handleDragLeave);
 
-document
-  .querySelector("#btn-zoom-out")
-  .addEventListener("click", handleZoomOut);
+const pan2endButton = document.querySelector("#btn-pan2end");
+pan2endButton.addEventListener("click", handlePan2end);
 
+const zoomOutButton = document.querySelector("#btn-zoom-out");
+zoomOutButton.addEventListener("click", handleZoomOut);
+
+// Main # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+GlobalScreenLogger.init(screenLogDiv);
+GlobalScreenLogger.log("Hola, mundo!");
+GlobalScreenLogger.log("Este es otro mensaje.");
+
+const ctx = canvas.getContext("2d");
 const ffmpeg = new FFmpeg({
   config: "gpl-extended",
 });
+const img = new Image();
 
-let img = new Image();
+initUI();
+
+// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+function initUI() {
+  uploadedImageContainer.classList.add("hidden");
+  uploadedImageContainer.classList.remove("uploaded-image-container");
+  restartContainer.classList.remove("restart-container");
+  restartContainer.classList.add("hidden");
+}
+function handleUploadFormClick() {
+  /** @type {HTMLInputElement} */
+  let input = document.querySelector("#input-upload");
+  input.click();
+}
 
 function handleRestartButton() {
   formUpload.classList.remove("hidden");
@@ -263,6 +225,53 @@ async function handleZoomOut() {
   let video = await createVideo(videoFrames);
   //console.log("fin ffmpeg  ", Date.now() - inicio);
   downloadVideo(video);
+}
+
+/**
+ * @param {Event} e
+ */
+function handleDragOver(e) {
+  e.preventDefault();
+  let dropTitles = document.querySelectorAll(".drop-title");
+  dropTitles.forEach((title) => {
+    title.classList.add("drop-title-dragover");
+  });
+
+  let dropContainer = document.querySelector(".drop-container");
+  dropContainer?.classList.add("drop-container-dragover");
+}
+
+function handleDragLeave() {
+  let dropTitles = document.querySelectorAll(".drop-title");
+  dropTitles.forEach((title) => {
+    title.classList.remove("drop-title-dragover");
+  });
+  let dropContainer = document.querySelector(".drop-container");
+  dropContainer?.classList.remove("drop-container-dragover");
+}
+
+/**
+ * @param {DragEvent} e
+ */
+function handleDrop(e) {
+  e.preventDefault();
+  handleDragLeave();
+  const files = [];
+
+  if (e.dataTransfer.items) {
+    for (let i = 0; i < e.dataTransfer.items.length; i++) {
+      if (e.dataTransfer.items[i].kind === "file") {
+        const file = e.dataTransfer.items[i].getAsFile();
+        if (file) {
+          files.push(file);
+        }
+      }
+    }
+  }
+  if (files.length > 0) {
+    loadImage(files[0]);
+    setUploadedUI();
+  }
 }
 
 //TODO: catch del error para el reject?
