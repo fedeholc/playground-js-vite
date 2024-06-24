@@ -15,7 +15,7 @@ https: //lospec.com/palette-list/tokyo-night
   --buttonBG: var(--color1);
   --buttonShadow: var(--color3);
 
-  --separator: var(--color3);
+  --divider: var(--color3);
 
   --drop: var(--color18);
   --dropHover: var(--color20);
@@ -299,8 +299,8 @@ details[open] summary {
   justify-content: flex-end;
 }
 
-.separator {
-  border-top: 1px solid var(--separator);
+.divider {
+  border-top: 1px solid var(--divider);
 }
 
 .label-selected {

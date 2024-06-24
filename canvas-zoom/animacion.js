@@ -16,12 +16,20 @@ import { createFramesPan2end, createFramesZoomOut } from "./createFrames.js";
 const screenLogDiv =
   /** @type {HTMLDivElement} */ document.getElementById("screen-log");
 
+/** @type {HTMLSelectElement} */
+const selectSizePresets = document.querySelector("#size-presets");
+selectSizePresets.addEventListener("change", handleSelectSizePresets);
+
 const inputCanvasHeight = /** @type {HTMLInputElement} */ (
   document.querySelector("#canvas-height")
 );
+inputCanvasHeight.addEventListener("change", handleInputCanvas);
+
 const inputCanvasWidth = /** @type {HTMLInputElement} */ (
   document.querySelector("#canvas-width")
 );
+inputCanvasWidth.addEventListener("change", handleInputCanvas);
+
 const inputDivideBy = /** @type {HTMLInputElement} */ (
   document.querySelector("#divide-by")
 );
@@ -118,6 +126,33 @@ function initUI() {
   //createVideoButton.classList.add("hidden");
 }
 
+function handleSelectSizePresets() {
+  let selectedPreset = selectSizePresets.selectedOptions[0].label;
+  console.log(selectedPreset);
+  let x = selectedPreset.split("(")[1].split("x")[0].trim();
+  let y = selectedPreset.split("x")[1].split(")")[0].trim();
+  inputCanvasHeight.value = y;
+  inputCanvasWidth.value = x;
+  handleInputCanvas();
+}
+function handleInputCanvas() {
+  canvas.height = parseInt(inputCanvasHeight.value);
+  canvas.width = parseInt(inputCanvasWidth.value);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let oldHeight = img.height;
+  let oldWidth = img.width;
+  img.height = canvas.height;
+  img.width = oldWidth * (canvas.height / oldHeight);
+
+  //TODO: según el efecto podría cambiar el preview... si desde la izquierda o centrado. También se podría hacer un preview del primer frame y otro del último.
+  //FIXME: ojo, si la imagen es vertical y el canvas es horizontal no se está haciendo el crop
+  //imagen desde la izquierda
+  //ctx.drawImage(img, 0, 0, img.width, img.height);
+
+  //imagen centrada
+  ctx.drawImage(img, (canvas.width - img.width) / 2, 0, img.width, img.height);
+}
+
 function handleCreateVideo() {
   if (img.src === "") {
     return;
@@ -203,14 +238,13 @@ function loadImage(file) {
   const reader = new FileReader();
   reader.onload = function (event) {
     img.onload = function () {
-      canvas.height = 1920 / 4; //VER
-      canvas.width = 1080 / 4;
+      canvas.height = 1920; //VER
+      canvas.width = 1080;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       let oldHeight = img.height;
       let oldWidth = img.width;
       img.height = canvas.height;
       img.width = oldWidth * (canvas.height / oldHeight);
-      console.log(img.height, img.width);
 
       //imagen desde la izquierda
       //ctx.drawImage(img, 0, 0, img.width, img.height);
