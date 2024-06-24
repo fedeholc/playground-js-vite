@@ -190,6 +190,8 @@ function setUploadedUI() {
   restartContainer.classList.add("restart-container");
   uploadedImageContainer.classList.remove("hidden");
   uploadedImageContainer.classList.add("uploaded-image-container");
+
+  effecstDetails.setAttribute("open", "");
 }
 /**
  * @param {Blob} file
