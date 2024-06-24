@@ -73,6 +73,7 @@ downloadVideoButton.addEventListener("click", handleDownloadVideo);
 
 const pan2endSection = document.querySelector("#pan2end-section");
 const zoomOutSection = document.querySelector("#zoomout-section");
+const outputSection = document.querySelector("#output-section");
 
 // Main # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -110,10 +111,8 @@ function initUI() {
   pan2endSection.classList.add("hidden");
   zoomOutSection.classList.add("hidden");
 
-  /*  effecstDetails.removeAttribute("open");
-  effecstDetails.addEventListener("click", function (e) {
-    e.preventDefault();
-  }); */
+  effecstDetails.removeAttribute("open");
+  outputSection.querySelector("details").removeAttribute("open");
 
   downloadVideoButton.classList.add("hidden");
   //createVideoButton.classList.add("hidden");
@@ -138,9 +137,11 @@ function handleRadioPan2end() {
   zoomOutContainer.classList.remove("container-selected");
 
   pan2endSection.classList.remove("hidden");
-  document.querySelector("#pan2end-section details").setAttribute("open", "");
+  pan2endSection.querySelector("details").setAttribute("open", "");
 
   zoomOutSection.classList.add("hidden");
+
+  outputSection.querySelector("details").setAttribute("open", "");
 
   //createVideoButton.classList.remove("hidden");
 }
@@ -155,6 +156,8 @@ function handleRadioZoomOut() {
   document.querySelector("#zoomout-section details").setAttribute("open", "");
 
   pan2endSection.classList.add("hidden");
+
+  outputSection.querySelector("details").setAttribute("open", "");
 
   //createVideoButton.classList.remove("hidden");
 }
